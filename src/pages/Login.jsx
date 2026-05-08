@@ -33,7 +33,7 @@ export default function Login() {
           </div>
           <div>
             <span className="login-brand">NetKing</span>
-            <span className="login-brand-sub">CCTV Service</span>
+            <span className="login-brand-sub">Security Systems</span>
           </div>
         </div>
 

@@ -30,7 +30,7 @@ export default function Footer() {
           <div className="footer-brand">
             <Link to="/" className="footer-logo">
               <img src={logo} alt="NetKing"/>
-              <div><span className="fl-name">NetKing</span><span className="fl-sub">CCTV Service</span></div>
+              <div><span className="fl-name">NetKing</span><span className="fl-sub">Security Systems</span></div>
             </Link>
             <p>Your trusted partner in advanced surveillance and security solutions. Protecting homes and businesses across Hyderabad since 2019.</p>
             <div className="footer-socials">
@@ -76,7 +76,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <div className="fb-l"><FaShieldAlt/><p>© {new Date().getFullYear()} NetKing CCTV Service. All rights reserved.</p></div>
+          <div className="fb-l"><FaShieldAlt/><p>© {new Date().getFullYear()} NetKing Security Systems. All rights reserved.</p></div>
           <p className="fb-r">Designed for your security 🔐</p>
         </div>
       </div>

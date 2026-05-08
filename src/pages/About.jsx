@@ -82,7 +82,7 @@ export default function About() {
                 <img src={logo} alt="NetKing"/>
                 <div>
                   <span className="slb-name">NetKing</span>
-                  <span className="slb-sub">CCTV Service</span>
+                  <span className="slb-sub">Security Systems</span>
                 </div>
               </div>
               <div className="story-float"><span className="sf-num">5+</span><span className="sf-lbl">Years of Excellence</span></div>

@@ -36,7 +36,7 @@ export default function Header() {
             </div>
             <div className="logo-text">
               <span className="logo-name">NetKing</span>
-              <span className="logo-sub">CCTV Service</span>
+              <span className="logo-sub">Security Systems</span>
             </div>
           </Link>
 
@@ -45,7 +45,7 @@ export default function Header() {
             <div className="nav-mob-hdr">
               <div className="logo-text">
                 <span className="logo-name">NetKing</span>
-                <span className="logo-sub" style={{display:'block'}}>CCTV Service</span>
+                <span className="logo-sub" style={{display:'block'}}>Security Systems</span>
               </div>
               <button className="nav-close" onClick={() => setOpen(false)}><MdClose size={22}/></button>
             </div>
