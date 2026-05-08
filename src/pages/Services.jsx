@@ -19,27 +19,31 @@ const services = [
     desc: 'Professional installation of indoor and outdoor HD & IP cameras with optimal placement for maximum coverage.',
     feats: ['HD & 4K Cameras', 'Night Vision', 'Weatherproof Housing', 'Professional Cabling'],
     badge: 'bs', color: '#e01020',
+    img: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=600&q=80',
   },
   {
     ico: <MdBuild />, t: 'System Maintenance & Repair', cat: 'Maintenance',
     price: 'From ₹999', rating: 4.8, reviews: 94,
     desc: 'Regular preventive maintenance and fast repair services to keep your security system at peak performance.',
     feats: ['Annual Contracts', 'Emergency Repairs', 'Firmware Updates', 'Health Checkups'],
-    badge: null, color: '#0078ff',
+    badge: null, color: '#e01020',
+    img: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600&q=80',
   },
   {
     ico: <MdWifi />, t: 'Remote Monitoring Setup', cat: 'Monitoring',
     price: 'From ₹1,499', rating: 4.9, reviews: 76,
     desc: 'Access your cameras from anywhere in the world with advanced remote monitoring configuration.',
     feats: ['Cloud Storage', 'Real-time Alerts', 'Multi-device Access', 'Encrypted Connection'],
-    badge: 'new', color: '#00b894',
+    badge: 'new', color: '#e01020',
+    img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
   },
   {
     ico: <MdPhoneAndroid />, t: 'Mobile App Integration', cat: 'Monitoring',
     price: 'From ₹799', rating: 4.7, reviews: 112,
     desc: 'View live footage and receive instant notifications directly on your smartphone or tablet.',
     feats: ['iOS & Android', 'Push Notifications', 'Live Streaming', 'Playback & Download'],
-    badge: null, color: '#6c5ce7',
+    badge: null, color: '#e01020',
+    img: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80',
   },
   {
     ico: <MdBusiness />, t: 'Commercial Surveillance', cat: 'Installation',
@@ -47,27 +51,31 @@ const services = [
     desc: 'Comprehensive surveillance for offices, retail stores, warehouses, and industrial facilities.',
     feats: ['Multi-camera Systems', 'NVR/DVR Setup', 'Network Config', 'Staff Training'],
     badge: 'prem', color: '#e01020',
+    img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80',
   },
   {
     ico: <MdHome />, t: 'Home Security Systems', cat: 'Installation',
     price: 'From ₹5,999', rating: 4.8, reviews: 87,
     desc: 'Complete home security packages designed to protect your family and property around the clock.',
     feats: ['Doorbell Cameras', 'Indoor Cameras', 'Motion Detection', 'Smart Home Integration'],
-    badge: null, color: '#fd79a8',
+    badge: null, color: '#e01020',
+    img: 'https://images.unsplash.com/photo-1558002038-1055907df827?w=600&q=80',
   },
   {
     ico: <MdLock />, t: 'Access Control Systems', cat: 'Security',
     price: 'From ₹4,999', rating: 4.9, reviews: 55,
     desc: 'Smart access control solutions including biometric, card-based, and keypad entry systems.',
     feats: ['Biometric Readers', 'Card Access', 'Door Controllers', 'Visitor Management'],
-    badge: null, color: '#fdcb6e',
+    badge: null, color: '#e01020',
+    img: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600&q=80',
   },
   {
     ico: <MdNotificationsActive />, t: 'Alarm Systems', cat: 'Security',
     price: 'From ₹2,999', rating: 4.7, reviews: 68,
     desc: 'Advanced intrusion detection and alarm systems with instant notification and response.',
     feats: ['Motion Sensors', 'Door/Window Sensors', 'Siren Alerts', 'Central Monitoring'],
-    badge: null, color: '#e17055',
+    badge: null, color: '#e01020',
+    img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80',
   },
 ];
 
@@ -220,16 +228,16 @@ export default function Services() {
 
         <div className="container" style={{ paddingTop: '52px', paddingBottom: '88px' }}>
           <div className="svc-grid">
-            {filtered.map(({ ico, t, cat: c, price, rating, reviews, desc, feats, badge, color }, i) => (
-              <div
-                key={t}
-                className="svc-card"
-                style={{ '--card-color': color }}
-              >
+            {filtered.map(({ ico, t, cat: c, price, rating, reviews, desc, feats, badge, img }, i) => (
+              <div key={t} className="svc-card">
+                <div className="svc-card-img">
+                  <img src={img} alt={t} loading="lazy" />
+                  <div className="svc-card-img-overlay" />
+                  {badge && (
+                    <span className={`svc-badge ${badgeMap[badge][0]}`}>{badgeMap[badge][1]}</span>
+                  )}
+                </div>
                 <div className="svc-card-glow" />
-                {badge && (
-                  <span className={`svc-badge ${badgeMap[badge][0]}`}>{badgeMap[badge][1]}</span>
-                )}
                 <div className="svc-card-top">
                   <div className="svc-card-ico">{ico}</div>
                   <div className="svc-card-rating">

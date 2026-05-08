@@ -32,9 +32,9 @@ const highlights = [
   { ico:<IoShieldCheckmark/>, t:'Comprehensive Warranty Coverage' },
 ];
 const team = [
-  { n:'Technical Team', r:'Certified CCTV Technicians', ico:<FaTools size={28}/>,       tag:'10+ Experts' },
-  { n:'Support Team',   r:'24/7 Customer Support',      ico:<MdSupportAgent size={28}/>, tag:'Always Available' },
-  { n:'Sales Team',     r:'Security Consultants',        ico:<MdVerified size={28}/>,     tag:'Free Consultation' },
+  { n:'Technical Team', r:'Certified CCTV Technicians', ico:<FaTools size={28}/>,       tag:'10+ Experts',        img:'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400&q=80' },
+  { n:'Support Team',   r:'24/7 Customer Support',      ico:<MdSupportAgent size={28}/>, tag:'Always Available',   img:'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&q=80' },
+  { n:'Sales Team',     r:'Security Consultants',        ico:<MdVerified size={28}/>,     tag:'Free Consultation',  img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80' },
 ];
 
 export default function About() {
@@ -76,7 +76,15 @@ export default function About() {
         <div className="container story-grid">
           <div className="story-vis reveal-l">
             <div className="story-img-wrap">
-              <img src={logo} alt="NetKing CCTV Service"/>
+              <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=700&q=85" alt="CCTV Installation"/>
+              <div className="story-img-overlay"/>
+              <div className="story-logo-badge">
+                <img src={logo} alt="NetKing"/>
+                <div>
+                  <span className="slb-name">NetKing</span>
+                  <span className="slb-sub">CCTV Service</span>
+                </div>
+              </div>
               <div className="story-float"><span className="sf-num">5+</span><span className="sf-lbl">Years of Excellence</span></div>
             </div>
             <div className="story-mini">
@@ -141,11 +149,17 @@ export default function About() {
           <h2 className="sec-title reveal">Our <span>Team</span></h2>
           <p className="sec-sub reveal">Dedicated professionals committed to your security</p>
           <div className="team-grid">
-            {team.map(({n,r,ico,tag},i) => (
+            {team.map(({n,r,ico,tag,img},i) => (
               <div key={n} className="team-card reveal" data-delay={i*100}>
-                <div className="team-ico">{ico}</div>
-                <h3>{n}</h3><p>{r}</p>
-                <span className="team-tag">{tag}</span>
+                <div className="team-card-img">
+                  <img src={img} alt={n} loading="lazy"/>
+                  <div className="team-card-img-overlay"/>
+                </div>
+                <div className="team-card-body">
+                  <div className="team-ico">{ico}</div>
+                  <h3>{n}</h3><p>{r}</p>
+                  <span className="team-tag">{tag}</span>
+                </div>
               </div>
             ))}
           </div>

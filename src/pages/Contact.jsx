@@ -40,6 +40,15 @@ export default function Contact() {
           <h1 className="sec-title reveal">Contact <span>Us</span></h1>
           <p className="sec-sub reveal">Ready to secure your property? Our certified technicians are just a call away.</p>
         </div>
+        <div className="contact-hero-img reveal">
+          <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1400&q=85" alt="CCTV Security Installation" loading="lazy"/>
+          <div className="chi-overlay"/>
+          <div className="chi-badges">
+            <span className="chi-badge"><MdPhone/>Call: 9248353592</span>
+            <span className="chi-badge"><MdLocationOn/>Hyderabad, Telangana</span>
+            <span className="chi-badge"><MdAccessTime/>Mon–Sat 9AM–7PM</span>
+          </div>
+        </div>
       </section>
 
       <section className="section" style={{paddingBottom:0}}>

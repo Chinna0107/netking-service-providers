@@ -47,12 +47,12 @@ const stats = [
 ];
 
 const services = [
-  { ico:<MdSecurity />,     t:'CCTV Installation',   d:'Indoor & outdoor HD/IP camera installation with professional setup and optimal placement.', badge:'hot',  feats:['HD & 4K','Night Vision','Weatherproof'] },
-  { ico:<FaTools />,        t:'Maintenance & Repair', d:'Regular preventive maintenance and fast emergency repair services to keep you protected.', badge:null, feats:['Annual AMC','Emergency','Firmware Update'] },
-  { ico:<MdWifi />,         t:'Remote Monitoring',    d:'Monitor your property from anywhere in the world, 24/7 with live alerts.', badge:'new',  feats:['Cloud Storage','Live Alerts','Encrypted'] },
-  { ico:<MdPhoneAndroid />, t:'Mobile App Setup',     d:'Live feed and instant push notifications directly on your smartphone or tablet.', badge:null, feats:['iOS & Android','Push Alerts','Playback'] },
-  { ico:<MdBusiness />,     t:'Commercial CCTV',      d:'Complete office, retail and industrial surveillance solutions.', badge:null, feats:['Multi-Camera','NVR/DVR','Staff Training'] },
-  { ico:<MdLock />,         t:'Access Control',       d:'Smart biometric and card-based access control systems for any property.', badge:null, feats:['Biometric','Card Access','Visitor Log'] },
+  { ico:<MdSecurity />,     t:'CCTV Installation',   d:'Indoor & outdoor HD/IP camera installation with professional setup and optimal placement.', badge:'hot',  feats:['HD & 4K','Night Vision','Weatherproof'], img:'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=600&q=80' },
+  { ico:<FaTools />,        t:'Maintenance & Repair', d:'Regular preventive maintenance and fast emergency repair services to keep you protected.', badge:null, feats:['Annual AMC','Emergency','Firmware Update'], img:'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600&q=80' },
+  { ico:<MdWifi />,         t:'Remote Monitoring',    d:'Monitor your property from anywhere in the world, 24/7 with live alerts.', badge:'new',  feats:['Cloud Storage','Live Alerts','Encrypted'], img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80' },
+  { ico:<MdPhoneAndroid />, t:'Mobile App Setup',     d:'Live feed and instant push notifications directly on your smartphone or tablet.', badge:null, feats:['iOS & Android','Push Alerts','Playback'], img:'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80' },
+  { ico:<MdBusiness />,     t:'Commercial CCTV',      d:'Complete office, retail and industrial surveillance solutions.', badge:null, feats:['Multi-Camera','NVR/DVR','Staff Training'], img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80' },
+  { ico:<MdLock />,         t:'Access Control',       d:'Smart biometric and card-based access control systems for any property.', badge:null, feats:['Biometric','Card Access','Visitor Log'], img:'https://images.unsplash.com/photo-1558002038-1055907df827?w=600&q=80' },
 ];
 
 const whyUs = [
@@ -204,22 +204,28 @@ export default function Home() {
           <h2 className="sec-title reveal">Our <span>Services</span></h2>
           <p className="sec-sub reveal">Professional security solutions for every need and budget</p>
           <div className="svc-grid">
-            {services.map(({ico,t,d,badge,feats},i)=>(
+            {services.map(({ico,t,d,badge,feats,img},i)=>(
               <div key={t} className="svc-card reveal" data-delay={i*80}>
-                <div className="svc-card-glow" />
-                {badge && <span className={`svc-badge ${badge==='new'?'badge-new':'badge-hot'}`}>{badge==='new'?'New':'Popular'}</span>}
-                <div className="svc-card-top">
-                  <div className="svc-icon">{ico}</div>
-                  <span className="svc-card-num">0{i+1}</span>
+                <div className="svc-card-img">
+                  <img src={img} alt={t} loading="lazy"/>
+                  <div className="svc-card-img-overlay"/>
+                  {badge && <span className={`svc-badge ${badge==='new'?'badge-new':'badge-hot'}`}>{badge==='new'?'New':'Popular'}</span>}
                 </div>
-                <h3>{t}</h3>
-                <p>{d}</p>
-                <ul className="svc-feats">
-                  {feats.map(f=><li key={f}><MdCheckCircle/>{f}</li>)}
-                </ul>
-                <div className="svc-btns">
-                  <a href="tel:9248353592" className="svc-btn svc-call"><MdPhone/>Call</a>
-                  <a href="https://wa.me/919248353592" className="svc-btn svc-wa" target="_blank" rel="noreferrer"><FaWhatsapp/>WhatsApp</a>
+                <div className="svc-card-body">
+                  <div className="svc-card-glow" />
+                  <div className="svc-card-top">
+                    <div className="svc-icon">{ico}</div>
+                    <span className="svc-card-num">0{i+1}</span>
+                  </div>
+                  <h3>{t}</h3>
+                  <p>{d}</p>
+                  <ul className="svc-feats">
+                    {feats.map(f=><li key={f}><MdCheckCircle/>{f}</li>)}
+                  </ul>
+                  <div className="svc-btns">
+                    <a href="tel:9248353592" className="svc-btn svc-call"><MdPhone/>Call</a>
+                    <a href="https://wa.me/919248353592" className="svc-btn svc-wa" target="_blank" rel="noreferrer"><FaWhatsapp/>WhatsApp</a>
+                  </div>
                 </div>
                 <div className="svc-card-bar" />
               </div>

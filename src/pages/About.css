@@ -17,7 +17,13 @@
 .story-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
 .story-vis { display:flex; flex-direction:column; gap:18px; }
 .story-img-wrap { position:relative; border-radius:var(--radius-lg); overflow:hidden; border:1px solid rgba(0,0,0,.08); box-shadow:var(--shadow-md); }
-.story-img-wrap img { width:100%; height:auto; object-fit:contain; display:block; background:#fff; }
+.story-img-wrap > img { width:100%; height:320px; object-fit:cover; display:block; transition:transform .5s ease; }
+.story-img-wrap:hover > img { transform:scale(1.04); }
+.story-img-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.45) 100%); pointer-events:none; }
+.story-logo-badge { position:absolute; top:16px; left:16px; z-index:2; display:flex; align-items:center; gap:10px; background:rgba(0,0,0,.75); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.15); border-radius:14px; padding:10px 16px; }
+.story-logo-badge img { width:38px; height:38px !important; border-radius:8px; object-fit:contain; background:#fff; border:1px solid rgba(255,255,255,.2); flex-shrink:0; transition:none !important; transform:none !important; }
+.slb-name { display:block; font-family:'Orbitron',sans-serif; font-size:13px; font-weight:900; color:#fff; line-height:1.2; }
+.slb-sub { display:block; font-size:9px; color:rgba(255,255,255,.55); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
 .story-float { position:absolute; bottom:18px; left:18px; z-index:1; background:rgba(13,13,13,.92); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:14px 18px; display:flex; flex-direction:column; gap:2px; }
 .sf-num { font-family:'Orbitron',sans-serif; font-size:28px; font-weight:900; background:var(--grad-red); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; }
 .sf-lbl { font-size:11px; color:#aaa; }
@@ -78,12 +84,17 @@
 .team-sec .sec-title { color:#fff; }
 .team-sec .sec-sub   { color:#666; }
 .team-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-.team-card { background:var(--bg-dark3); border:1px solid rgba(255,255,255,.07); border-radius:var(--radius-lg); padding:36px 24px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:11px; transition:all .4s ease; }
-.team-card:hover { border-color:rgba(255,255,255,.2); transform:translateY(-8px); box-shadow:var(--shadow-dark); }
-.team-ico { width:72px; height:72px; border-radius:50%; background:rgba(255,255,255,.06); border:2px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; color:#fff; transition:all .3s ease; }
+.team-card { background:var(--bg-dark3); border:1px solid rgba(255,255,255,.07); border-radius:var(--radius-lg); overflow:hidden; text-align:center; display:flex; flex-direction:column; transition:all .4s ease; }
+.team-card:hover { border-color:var(--red); transform:translateY(-8px); box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 0 1px var(--red); }
+.team-card-img { position:relative; width:100%; height:180px; overflow:hidden; flex-shrink:0; }
+.team-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; }
+.team-card:hover .team-card-img img { transform:scale(1.07); }
+.team-card-img-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.1) 0%,rgba(0,0,0,.55) 100%); }
+.team-card-body { padding:24px; display:flex; flex-direction:column; align-items:center; gap:10px; flex:1; }
+.team-ico { width:60px; height:60px; border-radius:50%; background:rgba(255,255,255,.06); border:2px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; color:#fff; transition:all .3s ease; }
 .team-card:hover .team-ico { background:var(--red); border-color:var(--red); }
 .team-card h3 { font-size:17px; font-weight:700; color:#fff; }
-.team-card p  { font-size:13px; color:#777; }
+.team-card p  { font-size:13px; color:rgba(255,255,255,.6); }
 .team-tag { font-size:11.5px; font-weight:700; color:var(--red); background:rgba(224,16,32,.08); border:1px solid rgba(224,16,32,.2); padding:4px 14px; border-radius:20px; }
 
 /* CTA — red */
@@ -99,5 +110,5 @@
 .btn-cta-o:hover { background:rgba(255,255,255,.15); border-color:#fff; transform:translateY(-3px); }
 
 @media (max-width:1024px) { .stats-strip-row { grid-template-columns:repeat(2,1fr); } .ss-item:nth-child(2) { border-right:none; } .story-grid { grid-template-columns:1fr; gap:36px; } .vals-grid { grid-template-columns:repeat(2,1fr); } .team-grid { grid-template-columns:repeat(2,1fr); } .tl-line { left:20px; } .tl-item { grid-template-columns:1fr; position:relative; } .tl-l .tl-card,.tl-r .tl-card { grid-column:1; text-align:left; padding-left:52px; padding-right:16px; } .tl-l .tl-dot,.tl-r .tl-dot { position:absolute; left:20px; transform:translateX(-50%); } .tl-l .tl-ico { margin-left:0; } .story-pts { grid-template-columns:1fr 1fr; } .tl-dot-inner { border-color:var(--bg-light2); } }
-@media (max-width:768px) { .vals-grid { grid-template-columns:1fr; max-width:380px; margin:0 auto; } .team-grid { grid-template-columns:repeat(2,1fr); } .story-pts { grid-template-columns:1fr; } }
-@media (max-width:480px) { .ss-val { font-size:22px; } .team-grid { grid-template-columns:1fr; max-width:260px; margin:0 auto; } .vals-grid { max-width:100%; } .about-hero-btns,.story-acts,.about-cta-btns { flex-direction:column; align-items:stretch; } .about-hero-btns a,.story-acts a,.about-cta-btns a { justify-content:center; } .tl-card { padding:16px 14px 16px 48px; } }
+@media (max-width:768px) { .vals-grid { grid-template-columns:1fr; max-width:380px; margin:0 auto; } .team-grid { grid-template-columns:repeat(2,1fr); } .story-pts { grid-template-columns:1fr; } .team-card-img { height:140px; } }
+@media (max-width:480px) { .ss-val { font-size:22px; } .team-grid { grid-template-columns:1fr; max-width:320px; margin:0 auto; } .vals-grid { max-width:100%; } .about-hero-btns,.story-acts,.about-cta-btns { flex-direction:column; align-items:stretch; } .about-hero-btns a,.story-acts a,.about-cta-btns a { justify-content:center; } .tl-card { padding:16px 14px 16px 48px; } }
