@@ -4,7 +4,7 @@ import {
   MdSecurity, MdBuild, MdWifi, MdPhoneAndroid,
   MdBusiness, MdLock, MdVerified, MdVideocam,
   MdSupportAgent, MdFlashOn, MdArrowForward,
-  MdPhone, MdStar, MdNotificationsActive,
+  MdPhone, MdStar, MdNotificationsActive, MdCheckCircle,
 } from 'react-icons/md';
 import { FaWhatsapp, FaShieldAlt, FaCamera, FaTools, FaAward } from 'react-icons/fa';
 import { IoShieldCheckmark } from 'react-icons/io5';
@@ -47,12 +47,12 @@ const stats = [
 ];
 
 const services = [
-  { ico:<MdSecurity />,     t:'CCTV Installation',   d:'Indoor & outdoor HD/IP camera installation with professional setup and optimal placement.', badge:'hot' },
-  { ico:<FaTools />,        t:'Maintenance & Repair', d:'Regular preventive maintenance and fast emergency repair services to keep you protected.', badge:null },
-  { ico:<MdWifi />,         t:'Remote Monitoring',    d:'Monitor your property from anywhere in the world, 24/7 with live alerts.', badge:'new' },
-  { ico:<MdPhoneAndroid />, t:'Mobile App Setup',     d:'Live feed and instant push notifications directly on your smartphone or tablet.', badge:null },
-  { ico:<MdBusiness />,     t:'Commercial CCTV',      d:'Complete office, retail and industrial surveillance solutions.', badge:null },
-  { ico:<MdLock />,         t:'Access Control',       d:'Smart biometric and card-based access control systems for any property.', badge:null },
+  { ico:<MdSecurity />,     t:'CCTV Installation',   d:'Indoor & outdoor HD/IP camera installation with professional setup and optimal placement.', badge:'hot',  feats:['HD & 4K','Night Vision','Weatherproof'] },
+  { ico:<FaTools />,        t:'Maintenance & Repair', d:'Regular preventive maintenance and fast emergency repair services to keep you protected.', badge:null, feats:['Annual AMC','Emergency','Firmware Update'] },
+  { ico:<MdWifi />,         t:'Remote Monitoring',    d:'Monitor your property from anywhere in the world, 24/7 with live alerts.', badge:'new',  feats:['Cloud Storage','Live Alerts','Encrypted'] },
+  { ico:<MdPhoneAndroid />, t:'Mobile App Setup',     d:'Live feed and instant push notifications directly on your smartphone or tablet.', badge:null, feats:['iOS & Android','Push Alerts','Playback'] },
+  { ico:<MdBusiness />,     t:'Commercial CCTV',      d:'Complete office, retail and industrial surveillance solutions.', badge:null, feats:['Multi-Camera','NVR/DVR','Staff Training'] },
+  { ico:<MdLock />,         t:'Access Control',       d:'Smart biometric and card-based access control systems for any property.', badge:null, feats:['Biometric','Card Access','Visitor Log'] },
 ];
 
 const whyUs = [
@@ -204,16 +204,24 @@ export default function Home() {
           <h2 className="sec-title reveal">Our <span>Services</span></h2>
           <p className="sec-sub reveal">Professional security solutions for every need and budget</p>
           <div className="svc-grid">
-            {services.map(({ico,t,d,badge},i)=>(
+            {services.map(({ico,t,d,badge,feats},i)=>(
               <div key={t} className="svc-card reveal" data-delay={i*80}>
+                <div className="svc-card-glow" />
                 {badge && <span className={`svc-badge ${badge==='new'?'badge-new':'badge-hot'}`}>{badge==='new'?'New':'Popular'}</span>}
-                <div className="svc-icon">{ico}</div>
+                <div className="svc-card-top">
+                  <div className="svc-icon">{ico}</div>
+                  <span className="svc-card-num">0{i+1}</span>
+                </div>
                 <h3>{t}</h3>
                 <p>{d}</p>
+                <ul className="svc-feats">
+                  {feats.map(f=><li key={f}><MdCheckCircle/>{f}</li>)}
+                </ul>
                 <div className="svc-btns">
                   <a href="tel:9248353592" className="svc-btn svc-call"><MdPhone/>Call</a>
                   <a href="https://wa.me/919248353592" className="svc-btn svc-wa" target="_blank" rel="noreferrer"><FaWhatsapp/>WhatsApp</a>
                 </div>
+                <div className="svc-card-bar" />
               </div>
             ))}
           </div>
