@@ -1,0 +1,25 @@
+/* ─── Global Ticker Bar — appears on all pages ─── */
+.ticker-bar {
+  position:fixed; top:0; left:0; right:0; z-index:1001;
+  height:34px; overflow:hidden;
+  background:#1a1a1a;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.ticker-track {
+  display:flex; align-items:center; height:100%;
+  width:max-content; animation:ticker 45s linear infinite;
+}
+.ticker-track:hover { animation-play-state:paused; }
+.ticker-item {
+  display:flex; align-items:center; gap:10px;
+  font-size:11.5px; font-weight:600; color:#888;
+  white-space:nowrap; padding:0 6px; letter-spacing:.3px;
+}
+.ticker-sep { color:#e01020; font-size:6px; margin-left:10px; opacity:.6; }
+
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+@media (max-width:480px) {
+  .ticker-bar { height:30px; }
+  .ticker-item { font-size:10.5px; }
+}
