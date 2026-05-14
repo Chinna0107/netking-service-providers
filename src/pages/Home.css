@@ -171,17 +171,17 @@
 .stat-val { font-family:'Orbitron',sans-serif; font-size:22px; font-weight:900; color:#fff; line-height:1; }
 .stat-lbl { font-size:10px; color:#666; letter-spacing:1.2px; text-transform:uppercase; }
 
-/* ─── Services — BLACK background ─── */
-.services-sec { background: #000; }
-.services-sec .sec-title { color: #fff; }
-.services-sec .sec-sub   { color: rgba(255,255,255,.45); }
+/* ─── Services — WHITE+BISCUIT background ─── */
+.services-sec { background: linear-gradient(180deg, #fff 0%, #faf8f5 100%); }
+.services-sec .sec-title { color: #000; }
+.services-sec .sec-sub   { color: #666; }
 .services-sec .eyebrow   { color: var(--red); }
 
 .svc-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
 
 .svc-card {
-  background: #111;
-  border: 1px solid rgba(255,255,255,.08);
+  background: #000;
+  border: 1px solid rgba(255,255,255,.15);
   border-radius: var(--radius-lg);
   display: flex; flex-direction: column;
   position: relative; overflow: hidden;
@@ -190,7 +190,7 @@
 .svc-card:hover {
   border-color: var(--red);
   transform: translateY(-8px);
-  box-shadow: 0 24px 60px rgba(0,0,0,.6), 0 0 0 1px var(--red);
+  box-shadow: 0 24px 60px rgba(0,0,0,.3), 0 0 0 1px var(--red);
 }
 
 .svc-card-img {
@@ -213,7 +213,7 @@
 }
 .svc-card-glow {
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(224,16,32,.1), transparent);
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(224,16,32,.2), transparent);
   opacity: 0; transition: opacity .4s;
 }
 .svc-card:hover .svc-card-glow { opacity: 1; }
@@ -240,7 +240,7 @@
 
 .svc-icon {
   width: 54px; height: 54px; border-radius: 14px; flex-shrink: 0;
-  background: rgba(224,16,32,.1); border: 1.5px solid rgba(224,16,32,.2);
+  background: rgba(224,16,32,.2); border: 1.5px solid rgba(224,16,32,.4);
   display: flex; align-items: center; justify-content: center;
   font-size: 24px; color: var(--red); transition: all .35s ease;
 }
@@ -262,9 +262,9 @@
   padding:10px 8px; border-radius:10px; font-size:12.5px; font-weight:700;
   text-decoration:none; transition:all .3s ease; cursor:pointer;
 }
-.svc-call { background: rgba(224,16,32,.1); color: var(--red); border: 1.5px solid rgba(224,16,32,.2); }
+.svc-call { background: rgba(224,16,32,.2); color: var(--red); border: 1.5px solid rgba(224,16,32,.4); }
 .svc-call:hover { background: var(--red); color: #fff; transform: translateY(-2px); }
-.svc-wa   { background: rgba(255,255,255,.06); color: #fff; border: 1.5px solid rgba(255,255,255,.12); }
+.svc-wa   { background: rgba(255,255,255,.12); color: #fff; border: 1.5px solid rgba(255,255,255,.25); }
 .svc-wa:hover { background: #fff; color: #000; transform: translateY(-2px); }
 
 /* ─── Why Us — BLACK background ─── */

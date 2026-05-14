@@ -4,9 +4,14 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Services from './pages/Services';
+import ServiceDetail from './pages/ServiceDetail';
+import Gallery from './pages/Gallery';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Enquiry from './pages/Enquiry';
 import Login from './pages/Login';
+import AdminPanel from './pages/AdminPanel';
+import CustomerPanel from './pages/CustomerPanel';
 import './App.css';
 
 const tickerItems = [
@@ -39,19 +44,25 @@ function ScrollToTop() {
 function Layout() {
   const location = useLocation();
   const isLogin = location.pathname === '/login';
+  const isDashboard = ['/admin-panel', '/customer-panel'].includes(location.pathname);
   return (
     <>
       <ScrollToTop />
       <Ticker />
-      {!isLogin && <Header />}
+      {!isLogin && !isDashboard && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/service/:slug" element={<ServiceDetail />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/enquiry" element={<Enquiry />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin-panel" element={<AdminPanel />} />
+        <Route path="/customer-panel" element={<CustomerPanel />} />
       </Routes>
-      {!isLogin && <Footer />}
+      {!isLogin && !isDashboard && <Footer />}
     </>
   );
 }

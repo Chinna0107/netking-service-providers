@@ -8,9 +8,13 @@ import './Header.css';
 const links = [
   { to:'/', label:'Home' },
   { to:'/services', label:'Services' },
+  { to:'/gallery', label:'Gallery' },
   { to:'/about', label:'About Us' },
   { to:'/contact', label:'Contact' },
+  { to:'/enquiry', label:'Enquiry' },
 ];
+
+const isLoggedIn = () => localStorage.getItem('userRole');
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -54,14 +58,14 @@ export default function Header() {
             ))}
             {/* Mobile-only items inside nav */}
             <a href="tel:9248353592" className="nav-call"><MdPhone/>9248353592</a>
-            <Link to="/login" className="nav-login-btn"><FaShieldAlt/>Login</Link>
+            {!isLoggedIn() && <Link to="/login" className="nav-login-btn"><FaShieldAlt/>Login</Link>}
           </nav>
 
           {/* Desktop right side */}
           <div className="hdr-right">
             <a href="tel:9248353592" className="hdr-phone"><MdPhone/><span>9248353592</span></a>
             <div className="hdr-divider"/>
-            <Link to="/login" className="btn-red hdr-login"><FaShieldAlt/>Login</Link>
+            {!isLoggedIn() && <Link to="/login" className="btn-red hdr-login"><FaShieldAlt/>Login</Link>}
             <button className="hamburger" onClick={() => setOpen(!open)} aria-label="Menu">
               {open ? <MdClose size={22}/> : <MdMenu size={22}/>}
             </button>

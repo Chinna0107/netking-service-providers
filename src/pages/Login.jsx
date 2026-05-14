@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { MdEmail, MdLock, MdVisibility, MdVisibilityOff, MdArrowForward } from 'react-icons/md';
 import { FaShieldAlt } from 'react-icons/fa';
 import { IoShieldCheckmark } from 'react-icons/io5';
@@ -11,10 +11,40 @@ export default function Login() {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [rem, setRem] = useState(false);
+  const [userType, setUserType] = useState('customer');
+  const [error, setError] = useState('');
+  const nav = useNavigate();
 
-  const submit = e => {
-    e.preventDefault(); setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
+  const submit = async e => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const res = await fetch(`${API}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email, password: form.password }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error || 'Login failed'); return; }
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userRole', data.role);
+      localStorage.setItem('userEmail', data.email);
+      if (data.role === 'admin') {
+        // Redirect to admin panel with section parameter
+        const savedSection = localStorage.getItem('adminActiveSection') || 'dashboard';
+        nav(`/admin-panel?section=${savedSection}`);
+      } else {
+        // Redirect to customer panel with tab parameter
+        const savedTab = localStorage.getItem('customerActiveTab') || 'dashboard';
+        nav(`/customer-panel?tab=${savedTab}`);
+      }
+    } catch {
+      setError('Server unreachable. Try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,6 +70,10 @@ export default function Login() {
         <div className="login-hdr">
           <h1>Welcome Back</h1>
           <p>Sign in to your security dashboard</p>
+          <div className="login-type-toggle">
+            <button className={`ltt-btn ${userType === 'customer' ? 'active' : ''}`} onClick={() => setUserType('customer')}>Customer</button>
+            <button className={`ltt-btn ${userType === 'admin' ? 'active' : ''}`} onClick={() => setUserType('admin')}>Admin</button>
+          </div>
         </div>
 
         <div className="login-badges">
@@ -49,10 +83,16 @@ export default function Login() {
 
         <form onSubmit={submit} className="login-form">
           <div className="lf-grp">
-            <label><MdEmail/>Email Address</label>
+            <label><MdEmail/>{userType === 'customer' ? 'User ID or Email' : 'Email Address'}</label>
             <div className="lf-wrap">
               <MdEmail className="lf-ico"/>
-              <input type="email" placeholder="your@email.com" required value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/>
+              <input 
+                type="text" 
+                placeholder={userType === 'customer' ? 'User ID or Email' : 'your@email.com'} 
+                required 
+                value={form.email} 
+                onChange={e=>setForm({...form,email:e.target.value})}
+              />
             </div>
           </div>
           <div className="lf-grp">
@@ -71,6 +111,7 @@ export default function Login() {
             </label>
             <a href="#" className="lf-forgot">Forgot password?</a>
           </div>
+          {error && <p style={{color:'#ff4d4d',fontSize:'0.85rem',margin:'-4px 0 4px',textAlign:'center'}}>{error}</p>}
           <button type="submit" className={`btn-red lf-submit ${loading?'loading':''}`} disabled={loading}>
             {loading ? <span className="lf-spin"/> : <><FaShieldAlt/>Sign In<MdArrowForward/></>}
           </button>

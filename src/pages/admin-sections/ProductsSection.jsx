@@ -1,0 +1,421 @@
+import { useState, useEffect } from 'react';
+import {
+  MdArrowBack,
+  MdCheckCircle,
+  MdPersonSearch,
+  MdSearch,
+  MdAdd,
+  MdRemove,
+} from 'react-icons/md';
+import { FaVideo, FaWifi } from 'react-icons/fa';
+
+const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+function authHeaders() {
+  return { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` };
+}
+
+export default function ProductsSection() {
+  const [customers, setCustomers] = useState([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [serviceFilter, setServiceFilter] = useState('all');
+  const [products, setProducts] = useState([]);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    loadCustomers();
+  }, []);
+
+  const loadCustomers = async () => {
+    try {
+      const res = await fetch(`${API}/api/admin/customers`, { headers: authHeaders() });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      
+      // Load product count for each customer
+      const customersWithProducts = await Promise.all(
+        data.map(async (customer) => {
+          const prodRes = await fetch(`${API}/api/admin/customers/${customer.id}/products`, {
+            headers: authHeaders(),
+          });
+          const products = await prodRes.json();
+          return { ...customer, productCount: products.length };
+        })
+      );
+      
+      setCustomers(customersWithProducts);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  const loadCustomerProducts = async (customerId) => {
+    try {
+      const res = await fetch(`${API}/api/admin/customers/${customerId}/products`, {
+        headers: authHeaders(),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      
+      // Convert API format to editor format
+      const editorProducts = data.map(p => ({
+        type: p.product_name,
+        model: p.product_description || '',
+        serialNo: '',
+        quantity: p.quantity,
+        unitPrice: Number(p.price),
+      }));
+      
+      setProducts(editorProducts.length > 0 ? editorProducts : [getEmptyProduct()]);
+    } catch (err) {
+      setError(err.message);
+      setProducts([getEmptyProduct()]);
+    }
+  };
+
+  const getEmptyProduct = () => ({
+    type: '',
+    model: '',
+    serialNo: '',
+    quantity: 1,
+    unitPrice: 0,
+  });
+
+  const selectedCustomer = customers.find(c => c.id === selectedCustomerId);
+
+  const totalAssignedProducts = customers.reduce((sum, c) => sum + (c.productCount || 0), 0);
+  const customersWithProducts = customers.filter(c => (c.productCount || 0) > 0).length;
+  const customersMissingProducts = customers.filter(c => (c.productCount || 0) === 0).length;
+
+  const filteredCustomers = customers.filter((customer) => {
+    const matchesSearch =
+      customer.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      customer.phone?.includes(searchTerm) ||
+      customer.city?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesService = serviceFilter === 'all' || 
+      (serviceFilter === 'cctv' && customer.service_type === 'CC Camera') ||
+      (serviceFilter === 'broadband' && customer.service_type === 'Broadband');
+    return matchesSearch && matchesService;
+  });
+
+  const saveProductsToCustomer = async () => {
+    if (!selectedCustomer) return;
+
+    try {
+      // Delete all existing products for this customer
+      const existingRes = await fetch(`${API}/api/admin/customers/${selectedCustomer.id}/products`, {
+        headers: authHeaders(),
+      });
+      const existingProducts = await existingRes.json();
+      
+      for (const ep of existingProducts) {
+        await fetch(`${API}/api/admin/customer-products/${ep.id}`, {
+          method: 'DELETE',
+          headers: authHeaders(),
+        });
+      }
+
+      // Add all current products
+      for (const product of products) {
+        if (!product.type || product.unitPrice === 0) continue; // Skip empty/invalid products
+        
+        // Check if product exists in catalog
+        const catalogRes = await fetch(`${API}/api/admin/products`, { headers: authHeaders() });
+        const catalog = await catalogRes.json();
+        let dbProduct = catalog.find(p => p.name === product.type);
+        
+        if (!dbProduct) {
+          // Create product in catalog
+          const res = await fetch(`${API}/api/admin/products`, {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({
+              name: product.type,
+              description: product.model || '',
+              price: product.unitPrice,
+            }),
+          });
+          dbProduct = await res.json();
+        }
+
+        // Assign product to customer
+        await fetch(`${API}/api/admin/customers/${selectedCustomer.id}/products`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({
+            productId: dbProduct.id,
+            quantity: product.quantity,
+            price: product.unitPrice,
+          }),
+        });
+      }
+
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2000);
+      
+      // Reload customers to update counts
+      loadCustomers();
+    } catch (err) {
+      alert('Failed to save products: ' + err.message);
+    }
+  };
+
+  const handleSelectCustomer = (customer) => {
+    setSelectedCustomerId(customer.id);
+    loadCustomerProducts(customer.id);
+  };
+
+  const updateProduct = (index, field, value) => {
+    const updated = [...products];
+    updated[index][field] = value;
+    setProducts(updated);
+  };
+
+  const addProduct = () => {
+    setProducts([...products, getEmptyProduct()]);
+  };
+
+  const removeProduct = (index) => {
+    if (products.length === 1) {
+      setProducts([getEmptyProduct()]);
+    } else {
+      setProducts(products.filter((_, i) => i !== index));
+    }
+  };
+
+  const totalValue = products.reduce((sum, p) => sum + (p.quantity * p.unitPrice), 0);
+
+  if (loading) return <div style={{ padding: 40 }}>Loading customers...</div>;
+  if (error) return <div style={{ padding: 40, color: 'red' }}>Error: {error}</div>;
+
+  return (
+    <div className="workflow-section products-section">
+      {showSuccess && (
+        <div className="success-toast">
+          <MdCheckCircle /> Products saved! Customer will see these in their portal.
+        </div>
+      )}
+
+      {!selectedCustomer ? (
+        <>
+          <div className="workflow-hero">
+            <div>
+              <span className="section-eyebrow">Product Assignment</span>
+              <h2>Assign Products To Customers</h2>
+              <p>
+                Select a customer to assign products, devices, or services. All data is saved to the database and visible in customer portal.
+              </p>
+            </div>
+
+            <div className="compact-stats-grid">
+              <div className="compact-stat-card">
+                <strong>{totalAssignedProducts}</strong>
+                <span>Total Products Assigned</span>
+              </div>
+              <div className="compact-stat-card">
+                <strong>{customersWithProducts}</strong>
+                <span>Customers With Products</span>
+              </div>
+              <div className="compact-stat-card">
+                <strong>{customersMissingProducts}</strong>
+                <span>Customers Without Products</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="filter-toolbar">
+            <div className="search-box-large">
+              <MdSearch />
+              <input
+                type="text"
+                placeholder="Search by customer name, phone, or city..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            <div className="segmented-group">
+              <button
+                type="button"
+                className={serviceFilter === 'all' ? 'active' : ''}
+                onClick={() => setServiceFilter('all')}
+              >
+                All Services
+              </button>
+              <button
+                type="button"
+                className={serviceFilter === 'cctv' ? 'active' : ''}
+                onClick={() => setServiceFilter('cctv')}
+              >
+                <FaVideo /> CC Camera
+              </button>
+              <button
+                type="button"
+                className={serviceFilter === 'broadband' ? 'active' : ''}
+                onClick={() => setServiceFilter('broadband')}
+              >
+                <FaWifi /> Broadband
+              </button>
+            </div>
+          </div>
+
+          <div className="customer-select-grid">
+            {filteredCustomers.length === 0 ? (
+              <div className="empty-state-card">
+                <MdPersonSearch />
+                <h3>No matching customers</h3>
+                <p>Try a different search term or adjust the filters above.</p>
+              </div>
+            ) : (
+              filteredCustomers.map((customer) => (
+                <button
+                  key={customer.id}
+                  type="button"
+                  className="customer-select-card"
+                  onClick={() => handleSelectCustomer(customer)}
+                >
+                  <div className="csc-header">
+                    <div>
+                      <h3>{customer.name}</h3>
+                      <p style={{ display: 'flex', alignItems: 'center', gap: 6, margin: '4px 0 0' }}>
+                        {customer.service_type === 'Broadband' ? <FaWifi /> : <FaVideo />}
+                        {customer.service_type}
+                      </p>
+                    </div>
+                    <span className="csc-badge" style={{ 
+                      background: (customer.productCount || 0) > 0 ? '#dcfce7' : '#fee2e2',
+                      color: (customer.productCount || 0) > 0 ? '#166534' : '#991b1b'
+                    }}>
+                      {customer.productCount || 0} products
+                    </span>
+                  </div>
+
+                  <div className="csc-info">
+                    <span>📞 {customer.phone}</span>
+                    <span>📍 {customer.city || '—'}</span>
+                    {customer.user_id && <span>🆔 {customer.user_id}</span>}
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="products-editor">
+          <div className="editor-hero-card">
+            <div className="editor-hero-copy">
+              <button
+                type="button"
+                className="ghost-action-btn"
+                onClick={() => setSelectedCustomerId(null)}
+              >
+                <MdArrowBack /> Back To Customer List
+              </button>
+              <span className="section-eyebrow">Assigning Products To</span>
+              <h2>{selectedCustomer.name}</h2>
+              <p>
+                📞 {selectedCustomer.phone} • 📍 {selectedCustomer.address || selectedCustomer.city}
+              </p>
+              {selectedCustomer.user_id && (
+                <p style={{ marginTop: 8, fontSize: '0.9rem', color: '#6b7280' }}>
+                  🆔 Customer Login ID: <strong>{selectedCustomer.user_id}</strong>
+                </p>
+              )}
+            </div>
+
+            <div className="editor-hero-metrics">
+              <div className="compact-stat-card">
+                <strong>{products.filter(p => p.type).length}</strong>
+                <span>Product Lines</span>
+              </div>
+              <div className="compact-stat-card">
+                <strong>₹{totalValue.toLocaleString()}</strong>
+                <span>Total Value</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="admin-card">
+            <div className="admin-card-header">
+              <div>
+                <span className="admin-card-eyebrow">Product Assignment</span>
+                <h3>Assigned Products & Devices</h3>
+                <p>Add products for this customer. Click Save to update the database and customer portal.</p>
+              </div>
+            </div>
+
+            <div className="product-line-list">
+              {products.map((product, index) => (
+                <div key={index} className="product-line-row">
+                  <input
+                    type="text"
+                    placeholder="Product Name *"
+                    value={product.type}
+                    onChange={(e) => updateProduct(index, 'type', e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Model / Description"
+                    value={product.model}
+                    onChange={(e) => updateProduct(index, 'model', e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Serial No"
+                    value={product.serialNo}
+                    onChange={(e) => updateProduct(index, 'serialNo', e.target.value)}
+                  />
+                  <input
+                    type="number"
+                    placeholder="Qty"
+                    min="1"
+                    value={product.quantity}
+                    onChange={(e) => updateProduct(index, 'quantity', Number(e.target.value))}
+                  />
+                  <input
+                    type="number"
+                    placeholder="Unit Price"
+                    min="0"
+                    value={product.unitPrice}
+                    onChange={(e) => updateProduct(index, 'unitPrice', Number(e.target.value))}
+                  />
+                  <div className="product-line-total">
+                    <span>Total</span>
+                    <strong>₹{(product.quantity * product.unitPrice).toLocaleString()}</strong>
+                  </div>
+                  <button
+                    type="button"
+                    className="icon-action-btn danger"
+                    onClick={() => removeProduct(index)}
+                  >
+                    <MdRemove />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <button type="button" className="secondary-action-btn" onClick={addProduct}>
+              <MdAdd /> Add Product Line
+            </button>
+
+            <div className="product-total-chip" style={{ marginTop: 20 }}>
+              <span>Total Product Value</span>
+              <strong style={{ fontSize: 20, color: '#e01020' }}>₹{totalValue.toLocaleString()}</strong>
+            </div>
+          </div>
+
+          <div className="form-submit-row">
+            <button type="button" className="primary-action-btn" onClick={saveProductsToCustomer}>
+              <MdCheckCircle /> Save & Sync Products To Customer
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
