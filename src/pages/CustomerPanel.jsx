@@ -112,8 +112,8 @@ export default function CustomerPanel() {
         <div className="container">
           <div className="stats-grid">
             {[
-              { label: 'Products Assigned', val: profile?.products?.length || 0, ico: '📦', color: '#e01020' },
-              { label: 'Active Subscriptions', val: profile?.subscriptions?.filter(s => s.status === 'active').length || 0, ico: '📅', color: '#3b82f6' },
+              { label: 'Products Assigned', val: profile?.products?.length || 0, ico: '📦', color: '#8b5cf6' },
+              { label: 'Active Subscriptions', val: profile?.subscriptions?.filter(s => s.status === 'active').length || 0, ico: '📅', color: '#6366f1' },
               { label: 'Open Complaints', val: profile?.complaints?.filter(c => c.status !== 'resolved').length || 0, ico: '⏳', color: '#f59e0b' },
               { label: 'Resolved', val: profile?.complaints?.filter(c => c.status === 'resolved').length || 0, ico: '✅', color: '#10b981' },
             ].map(s => (
@@ -202,7 +202,7 @@ export default function CustomerPanel() {
                       </table>
                       {profile.products.length > 5 && (
                         <p style={{ margin: '12px 0 0', fontSize: '0.85rem', color: '#6b7280', textAlign: 'center' }}>
-                          +{profile.products.length - 5} more products. <button onClick={() => handleSetActiveTab('products')} style={{ color: '#e01020', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>View all</button>
+                          +{profile.products.length - 5} more products. <button onClick={() => handleSetActiveTab('products')} style={{ color: '#8b5cf6', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontWeight: 600 }}>View all</button>
                         </p>
                       )}
                     </>
@@ -249,7 +249,7 @@ export default function CustomerPanel() {
                           <td>{p.description || '—'}</td>
                           <td style={{ textAlign: 'center' }}>{p.quantity}</td>
                           <td>₹{Number(p.price).toLocaleString()}</td>
-                          <td><strong style={{ color: '#e01020' }}>₹{Number(p.total).toLocaleString()}</strong></td>
+                          <td><strong style={{ color: '#8b5cf6' }}>₹{Number(p.total).toLocaleString()}</strong></td>
                           <td>{new Date(p.created_at).toLocaleDateString()}</td>
                         </tr>
                       ))}
@@ -257,7 +257,7 @@ export default function CustomerPanel() {
                     <tfoot>
                       <tr style={{ background: '#f9fafb', fontWeight: 700 }}>
                         <td colSpan="4" style={{ textAlign: 'right' }}>Total Value:</td>
-                        <td style={{ color: '#e01020' }}>₹{profile.products.reduce((sum, p) => sum + Number(p.total), 0).toLocaleString()}</td>
+                        <td style={{ color: '#8b5cf6' }}>₹{profile.products.reduce((sum, p) => sum + Number(p.total), 0).toLocaleString()}</td>
                         <td></td>
                       </tr>
                     </tfoot>
@@ -291,7 +291,7 @@ export default function CustomerPanel() {
                           </p>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: 22, fontWeight: 700, color: '#e01020' }}>₹{Number(sub.amount).toLocaleString()}</div>
+                          <div style={{ fontSize: 22, fontWeight: 700, color: '#8b5cf6' }}>₹{Number(sub.amount).toLocaleString()}</div>
                           <span style={{ 
                             fontSize: 12, 
                             padding: '4px 10px', 
@@ -388,9 +388,9 @@ function ComplaintsTab({ complaints, onRaised }) {
             <option value="medium">Medium Priority</option>
             <option value="high">High Priority</option>
           </select>
-          {msg && <p style={{ color: msg.includes('success') ? '#10b981' : '#dc2626', fontSize: '0.9rem' }}>{msg}</p>}
+          {msg && <p style={{ color: msg.includes('success') ? '#10b981' : '#dc2626', fontSize: '0.9rem', fontWeight: 600 }}>{msg}</p>}
           <button type="submit" disabled={submitting}
-            style={{ padding: '11px 20px', borderRadius: 10, background: '#e01020', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
+            style={{ padding: '11px 20px', borderRadius: 12, background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s ease' }}>
             {submitting ? 'Submitting...' : 'Submit Complaint'}
           </button>
         </form>

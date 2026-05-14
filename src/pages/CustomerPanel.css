@@ -1,14 +1,38 @@
 .customer-panel-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #ffe8f0 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 30%, #fce7f3 70%, #fff1f2 100%);
   padding-bottom: 60px;
 }
 
 .cp-header {
-  background: linear-gradient(135deg, #ff2d55 0%, #ff1744 50%, #e01020 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
   color: white;
   padding: 40px 0;
-  box-shadow: 0 8px 30px rgba(255, 45, 85, 0.35);
+  box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cp-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.cp-header::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -5%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
 }
 
 .cp-header-inner {
@@ -16,6 +40,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .cp-title h1 {
@@ -34,20 +60,21 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.25);
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   color: white;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
 .cp-logout:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
 }
 
 .cp-info-sec {
@@ -55,11 +82,23 @@
 }
 
 .cp-info-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+  border-radius: 20px;
   padding: 30px;
-  box-shadow: 0 8px 25px rgba(255, 45, 85, 0.12);
-  border: 1px solid rgba(255, 45, 85, 0.1);
+  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.cp-info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #d946ef);
 }
 
 .cic-header {
@@ -75,14 +114,14 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff2d55, #ff1744);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
   font-weight: 700;
-  box-shadow: 0 4px 15px rgba(255, 45, 85, 0.3);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
 
 .cic-details h2 {
@@ -98,13 +137,13 @@
 }
 
 .amc-badge {
-  background: linear-gradient(135deg, #34d399, #10b981);
+  background: linear-gradient(135deg, #6ee7b7, #10b981);
   color: white;
   padding: 4px 12px;
   border-radius: 20px;
   font-weight: 600;
   font-size: 12px;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
 }
 
 .cic-grid {
@@ -122,7 +161,7 @@
 }
 
 .cic-item svg {
-  color: #e01020;
+  color: #8b5cf6;
   font-size: 18px;
 }
 
@@ -137,21 +176,34 @@
 }
 
 .stat-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+  border-radius: 16px;
   padding: 25px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.12);
   display: flex;
   align-items: center;
   gap: 20px;
-  border-left: 5px solid var(--sc, #ff2d55);
+  border-left: 5px solid var(--sc, #8b5cf6);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(255, 45, 85, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+  border-radius: 50%;
 }
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 35px rgba(255, 45, 85, 0.15);
+  box-shadow: 0 15px 45px rgba(139, 92, 246, 0.2);
 }
 
 .stat-ico {
@@ -177,10 +229,10 @@
 
 .cp-tabs-sec {
   padding: 30px 0;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-  box-shadow: 0 4px 15px rgba(255, 45, 85, 0.08);
+  background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
   margin-bottom: 40px;
-  border-bottom: 2px solid rgba(255, 45, 85, 0.1);
+  border-bottom: 2px solid rgba(139, 92, 246, 0.1);
 }
 
 .cp-tabs {
@@ -207,12 +259,14 @@
 }
 
 .cp-tab:hover {
-  color: #e01020;
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.05);
 }
 
 .cp-tab.active {
-  color: #ff2d55;
-  border-bottom-color: #ff2d55;
+  color: #8b5cf6;
+  border-bottom-color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.05);
 }
 
 .cp-content {
@@ -230,11 +284,11 @@
 }
 
 .cd-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+  border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 8px 25px rgba(255, 45, 85, 0.12);
-  border: 1px solid rgba(255, 45, 85, 0.1);
+  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.1);
 }
 
 .cd-card h3 {
@@ -290,11 +344,11 @@
 }
 
 .amc-btn {
-  background: linear-gradient(135deg, #ff2d55, #ff1744);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
   border: none;
   padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -303,7 +357,7 @@
 
 .amc-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 45, 85, 0.4);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
 }
 
 .quick-actions {
@@ -318,10 +372,10 @@
   justify-content: center;
   gap: 8px;
   padding: 12px;
-  border: 2px solid #ff2d55;
+  border: 2px solid #8b5cf6;
   background: white;
-  color: #ff2d55;
-  border-radius: 8px;
+  color: #8b5cf6;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -330,9 +384,11 @@
 }
 
 .qa-btn:hover {
-  background: #ff2d55;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
-  box-shadow: 0 4px 15px rgba(255, 45, 85, 0.3);
+  border-color: #6366f1;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+  transform: translateY(-2px);
 }
 
 .qa-btn.wa {
@@ -346,12 +402,12 @@
 }
 
 .cp-table {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+  border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 8px 25px rgba(255, 45, 85, 0.12);
+  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.12);
   animation: fadeIn 0.3s ease;
-  border: 1px solid rgba(255, 45, 85, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.1);
 }
 
 .cp-table h3 {
@@ -369,7 +425,7 @@
 }
 
 .cp-table thead {
-  background: linear-gradient(135deg, #fff5f7 0%, #f8f9ff 100%);
+  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
 }
 
 .cp-table th {
@@ -449,18 +505,18 @@
 }
 
 .complaint-card {
-  background: linear-gradient(135deg, #ffffff 0%, #fffbf0 100%);
-  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+  border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
-  border-left: 4px solid #fbbf24;
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.15);
+  border-left: 4px solid #f59e0b;
   transition: all 0.3s ease;
   border: 1px solid rgba(251, 191, 36, 0.1);
 }
 
 .complaint-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 35px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 15px 45px rgba(245, 158, 11, 0.25);
 }
 
 .cc-header {
@@ -551,11 +607,11 @@
 
 .cc-btn {
   width: 100%;
-  background: linear-gradient(135deg, #ff2d55, #ff1744);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
   border: none;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -564,7 +620,7 @@
 
 .cc-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 45, 85, 0.4);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
 }
 
 @keyframes fadeIn {
@@ -679,9 +735,9 @@
   }
 
   .cp-tab.active {
-    background: linear-gradient(135deg, #ff2d55, #ff1744);
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;
-    border-color: #ff2d55;
+    border-color: #6366f1;
   }
 
   .cp-content {
