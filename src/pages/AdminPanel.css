@@ -15,6 +15,27 @@
   --admin-shadow-soft: 0 12px 28px rgba(85, 46, 27, 0.05);
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.crm-root::-webkit-scrollbar,
+.crm-main::-webkit-scrollbar,
+.crm-body::-webkit-scrollbar,
+.form-modal::-webkit-scrollbar,
+.print-overlay::-webkit-scrollbar,
+.admin-standalone-page::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.crm-root,
+.crm-main,
+.crm-body,
+.form-modal,
+.print-overlay,
+.admin-standalone-page {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 .crm-root {
   min-height: 100vh;
   display: grid;

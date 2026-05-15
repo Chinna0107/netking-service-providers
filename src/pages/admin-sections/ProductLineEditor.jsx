@@ -58,16 +58,12 @@ export default function ProductLineEditor({
         ) : (
           lineItems.map((product, index) => (
             <div key={`${product.type}-${index}`} className="product-line-row">
-              <select
+              <input
+                type="text"
+                placeholder={service === 'cctv' ? 'Product Type (e.g., DVR/NVR, Camera)' : 'Service Item (e.g., Router, Modem)'}
                 value={product.type}
                 onChange={(event) => updateProduct(index, 'type', event.target.value)}
-              >
-                {productOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+              />
 
               <input
                 type="text"

@@ -94,6 +94,11 @@
     transition:right .4s cubic-bezier(.22,1,.36,1);
     z-index:1001; overflow-y:auto;
     box-shadow: -4px 0 20px rgba(0,0,0,.1);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
   }
   .nav.open { right:0; }
   .nav-mob-hdr {

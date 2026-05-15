@@ -253,18 +253,22 @@ export default function AddCustomerSection() {
                   required
                 />
 
-                <input
-                  type="text"
-                  name="vendorCode"
-                  placeholder="Vendor Code"
-                  value={form.vendorCode}
-                  onChange={handleChange}
-                />
+                {serviceType === 'cctv' && (
+                  <>
+                    <input
+                      type="text"
+                      name="vendorCode"
+                      placeholder="Vendor Code"
+                      value={form.vendorCode}
+                      onChange={handleChange}
+                    />
 
-                <select name="appAccess" value={form.appAccess} onChange={handleChange}>
-                  <option value="Yes - Mobile App Access">Yes - Mobile App Access</option>
-                  <option value="No - No App Access">No - No App Access</option>
-                </select>
+                    <select name="appAccess" value={form.appAccess} onChange={handleChange}>
+                      <option value="Yes - Mobile App Access">Yes - Mobile App Access</option>
+                      <option value="No - No App Access">No - No App Access</option>
+                    </select>
+                  </>
+                )}
 
                 {serviceType === 'cctv' && (
                   <>

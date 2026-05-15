@@ -16,7 +16,7 @@ const services = [
   {
     slug: 'cctv-installation',
     ico: <MdSecurity />, t: 'CCTV Camera Installation', cat: 'Installation',
-    price: 'From ₹3,999', rating: 4.9, reviews: 128,
+    // price: 'From ₹3,999', rating: 4.9, reviews: 128,
     desc: 'Professional installation of indoor and outdoor HD & IP cameras with optimal placement for maximum coverage.',
     feats: ['HD & 4K Cameras', 'Night Vision', 'Weatherproof Housing', 'Professional Cabling'],
     badge: 'bs', color: '#e01020',
@@ -24,7 +24,7 @@ const services = [
   {
     slug: 'system-maintenance',
     ico: <MdBuild />, t: 'System Maintenance & Repair', cat: 'Maintenance',
-    price: 'From ₹999', rating: 4.8, reviews: 94,
+    // price: 'From ₹999', rating: 4.8, reviews: 94,
     desc: 'Regular preventive maintenance and fast repair services to keep your security system at peak performance.',
     feats: ['Annual Contracts', 'Emergency Repairs', 'Firmware Updates', 'Health Checkups'],
     badge: null, color: '#e01020',
@@ -32,7 +32,7 @@ const services = [
   {
     slug: 'remote-monitoring',
     ico: <MdWifi />, t: 'Remote Monitoring Setup', cat: 'Monitoring',
-    price: 'From ₹1,499', rating: 4.9, reviews: 76,
+    // price: 'From ₹1,499', rating: 4.9, reviews: 76,
     desc: 'Access your cameras from anywhere in the world with advanced remote monitoring configuration.',
     feats: ['Cloud Storage', 'Real-time Alerts', 'Multi-device Access', 'Encrypted Connection'],
     badge: 'new', color: '#e01020',
@@ -40,7 +40,7 @@ const services = [
   {
     slug: 'mobile-app-integration',
     ico: <MdPhoneAndroid />, t: 'Mobile App Integration', cat: 'Monitoring',
-    price: 'From ₹799', rating: 4.7, reviews: 112,
+    // price: 'From ₹799', rating: 4.7, reviews: 112,
     desc: 'View live footage and receive instant notifications directly on your smartphone or tablet.',
     feats: ['iOS & Android', 'Push Notifications', 'Live Streaming', 'Playback & Download'],
     badge: null, color: '#e01020',
@@ -48,7 +48,7 @@ const services = [
   {
     slug: 'commercial-surveillance',
     ico: <MdBusiness />, t: 'Commercial Surveillance', cat: 'Installation',
-    price: 'Custom Quote', rating: 5.0, reviews: 43,
+    // price: 'Custom Quote', rating: 5.0, reviews: 43,
     desc: 'Comprehensive surveillance for offices, retail stores, warehouses, and industrial facilities.',
     feats: ['Multi-camera Systems', 'NVR/DVR Setup', 'Network Config', 'Staff Training'],
     badge: 'prem', color: '#e01020',
@@ -56,7 +56,7 @@ const services = [
   {
     slug: 'home-security',
     ico: <MdHome />, t: 'Home Security Systems', cat: 'Installation',
-    price: 'From ₹5,999', rating: 4.8, reviews: 87,
+    // price: 'From ₹5,999', rating: 4.8, reviews: 87,
     desc: 'Complete home security packages designed to protect your family and property around the clock.',
     feats: ['Doorbell Cameras', 'Indoor Cameras', 'Motion Detection', 'Smart Home Integration'],
     badge: null, color: '#e01020',
@@ -81,12 +81,12 @@ const services = [
 
 const packages = [
   {
-    name: 'Starter', price: '₹8,999', period: 'one-time', tag: null,
+    name: 'Starter', price: 'get quote', period: 'one-time', tag: null,
     feats: ['2 HD Cameras', 'DVR Setup', 'Mobile App', '30m Cable', '1 Year Warranty', 'Basic Support'],
     gradient: 'linear-gradient(135deg,#1a1a1a,#2a0a0a)',
   },
   {
-    name: 'Professional', price: '₹18,999', period: 'one-time', tag: 'Most Popular',
+    name: 'Professional', price: 'get quote', period: 'one-time', tag: 'Most Popular',
     feats: ['4 HD Cameras', 'NVR Setup', 'Remote Monitoring', 'Mobile App', '50m Cable', '2 Year Warranty', '24/7 Support'],
     gradient: 'linear-gradient(135deg,#1a0505,#2d0000)',
   },

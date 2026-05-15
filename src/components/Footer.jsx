@@ -65,13 +65,18 @@ export default function Footer() {
               <span className="fcr-ico"><MdEmail/></span>
               <div><span>Email</span><strong>support.netkingservice@gmail.com</strong></div>
             </a>
-            <div className="footer-contact-row">
-              <span className="fcr-ico"><MdLocationOn/></span>
-              <div><span>Location</span><strong>Hyderabad, Telangana</strong></div>
-            </div>
             <a href="https://wa.me/919248353592" className="footer-wa" target="_blank" rel="noreferrer">
               <FaWhatsapp/>WhatsApp Us
             </a>
+          </div>
+
+          <div className="footer-col">
+            <h4>Our Branches</h4>
+            <div className="footer-link"><MdLocationOn/>Hyderabad</div>
+            <div className="footer-link"><MdLocationOn/>Hanamkonda</div>
+            <div className="footer-link"><MdLocationOn/>Warangal</div>
+            <div className="footer-link"><MdLocationOn/>Nizamabad</div>
+            <div className="footer-link"><MdLocationOn/>Medak</div>
           </div>
         </div>
 

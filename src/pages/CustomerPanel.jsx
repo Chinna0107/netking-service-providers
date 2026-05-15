@@ -184,18 +184,18 @@ export default function CustomerPanel() {
                       </p>
                       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                         <thead>
-                          <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-                            <th style={{ textAlign: 'left', padding: '6px 0' }}>Product</th>
-                            <th style={{ textAlign: 'right', padding: '6px 0' }}>Qty</th>
-                            <th style={{ textAlign: 'right', padding: '6px 0' }}>Amount</th>
+                          <tr style={{ borderBottom: '2px solid #1e40af', background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' }}>
+                            <th style={{ textAlign: 'left', padding: '10px 8px', color: '#ffffff', fontWeight: 700 }}>Product</th>
+                            <th style={{ textAlign: 'right', padding: '10px 8px', color: '#ffffff', fontWeight: 700 }}>Qty</th>
+                            <th style={{ textAlign: 'right', padding: '10px 8px', color: '#ffffff', fontWeight: 700 }}>Amount</th>
                           </tr>
                         </thead>
                         <tbody>
                           {profile.products.slice(0, 5).map(p => (
-                            <tr key={p.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                              <td style={{ padding: '6px 0' }}>{p.product_name}</td>
-                              <td style={{ textAlign: 'right', padding: '6px 0' }}>{p.quantity}</td>
-                              <td style={{ textAlign: 'right', padding: '6px 0' }}>₹{Number(p.total).toLocaleString()}</td>
+                            <tr key={p.id} style={{ borderBottom: '1px solid #e5e7eb', background: '#ffffff' }}>
+                              <td style={{ padding: '10px 8px', color: '#1e40af', fontWeight: 700, fontSize: '0.95rem' }}>{p.product_name}</td>
+                              <td style={{ textAlign: 'right', padding: '10px 8px', fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{p.quantity}</td>
+                              <td style={{ textAlign: 'right', padding: '10px 8px', fontWeight: 800, color: '#7c3aed', fontSize: '1rem' }}>₹{Number(p.total).toLocaleString()}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -204,6 +204,16 @@ export default function CustomerPanel() {
                         <p style={{ margin: '12px 0 0', fontSize: '0.85rem', color: '#6b7280', textAlign: 'center' }}>
                           +{profile.products.length - 5} more products. <button onClick={() => handleSetActiveTab('products')} style={{ color: '#8b5cf6', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontWeight: 600 }}>View all</button>
                         </p>
+                      )}
+                      
+                      {/* Payment Due Alert in Dashboard */}
+                      {profile.balance_due > 0 && (
+                        <div style={{ marginTop: 16, padding: '14px 18px', background: 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)', borderRadius: 12, border: '3px solid #dc2626', boxShadow: '0 4px 16px rgba(220, 38, 38, 0.3)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ color: '#7f1d1d', fontWeight: 800, fontSize: '1rem' }}>⚠️ Payment Due:</span>
+                            <strong style={{ color: '#b91c1c', fontSize: '1.4rem', fontWeight: 900 }}>₹{Number(profile.balance_due).toLocaleString()}</strong>
+                          </div>
+                        </div>
                       )}
                     </>
                   )}
@@ -233,35 +243,55 @@ export default function CustomerPanel() {
                   </div>
                   <table>
                     <thead>
-                      <tr>
-                        <th>Product / Device</th>
-                        <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Total Amount</th>
-                        <th>Assigned Date</th>
+                      <tr style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' }}>
+                        <th style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.95rem' }}>Product / Device</th>
+                        <th style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.95rem' }}>Description</th>
+                        <th style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.95rem' }}>Quantity</th>
+                        <th style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.95rem' }}>Unit Price</th>
+                        <th style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.95rem' }}>Total Amount</th>
+                        <th style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.95rem' }}>Assigned Date</th>
                       </tr>
                     </thead>
                     <tbody>
                       {profile.products.map(p => (
-                        <tr key={p.id}>
-                          <td><strong>{p.product_name}</strong></td>
-                          <td>{p.description || '—'}</td>
-                          <td style={{ textAlign: 'center' }}>{p.quantity}</td>
-                          <td>₹{Number(p.price).toLocaleString()}</td>
-                          <td><strong style={{ color: '#8b5cf6' }}>₹{Number(p.total).toLocaleString()}</strong></td>
-                          <td>{new Date(p.created_at).toLocaleDateString()}</td>
+                        <tr key={p.id} style={{ borderBottom: '1px solid #e5e7eb', background: '#ffffff' }}>
+                          <td><strong style={{ color: '#1e40af', fontSize: '0.95rem' }}>{p.product_name}</strong></td>
+                          <td style={{ color: '#475569', fontSize: '0.9rem' }}>{p.description || '—'}</td>
+                          <td style={{ textAlign: 'center', fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{p.quantity}</td>
+                          <td style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>₹{Number(p.price).toLocaleString()}</td>
+                          <td><strong style={{ color: '#7c3aed', fontSize: '1.1rem', fontWeight: 800 }}>₹{Number(p.total).toLocaleString()}</strong></td>
+                          <td style={{ color: '#64748b', fontSize: '0.9rem' }}>{new Date(p.created_at).toLocaleDateString()}</td>
                         </tr>
                       ))}
                     </tbody>
                     <tfoot>
-                      <tr style={{ background: '#f9fafb', fontWeight: 700 }}>
-                        <td colSpan="4" style={{ textAlign: 'right' }}>Total Value:</td>
-                        <td style={{ color: '#8b5cf6' }}>₹{profile.products.reduce((sum, p) => sum + Number(p.total), 0).toLocaleString()}</td>
+                      <tr style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)', fontWeight: 800 }}>
+                        <td colSpan="4" style={{ textAlign: 'right', color: '#ffffff', fontSize: '1.1rem', padding: '14px' }}>Total Value:</td>
+                        <td style={{ color: '#ffffff', fontSize: '1.3rem', fontWeight: 900, padding: '14px' }}>₹{profile.products.reduce((sum, p) => sum + Number(p.total), 0).toLocaleString()}</td>
                         <td></td>
                       </tr>
                     </tfoot>
                   </table>
+                  
+                  {/* Payment Due Alert */}
+                  {profile.balance_due > 0 && (
+                    <div style={{ marginTop: 24, padding: '20px 24px', background: 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)', borderRadius: 16, border: '3px solid #dc2626', boxShadow: '0 8px 24px rgba(220, 38, 38, 0.4)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12 }}>
+                        <span style={{ fontSize: 36 }}>⚠️</span>
+                        <div>
+                          <h4 style={{ margin: 0, color: '#7f1d1d', fontSize: '1.3rem', fontWeight: 900 }}>Payment Due</h4>
+                          <p style={{ margin: '6px 0 0', color: '#991b1b', fontSize: '1rem', fontWeight: 600 }}>You have an outstanding balance</p>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, padding: '16px 20px', background: 'white', borderRadius: 12, border: '2px solid #dc2626' }}>
+                        <span style={{ color: '#7f1d1d', fontWeight: 800, fontSize: '1.1rem' }}>Amount Due:</span>
+                        <strong style={{ color: '#b91c1c', fontSize: '1.8rem', fontWeight: 900 }}>₹{Number(profile.balance_due).toLocaleString()}</strong>
+                      </div>
+                      <a href="tel:9248353592" style={{ display: 'block', marginTop: 16, padding: '16px', background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: 'white', textAlign: 'center', borderRadius: 12, textDecoration: 'none', fontWeight: 900, fontSize: '1.05rem', boxShadow: '0 6px 20px rgba(220, 38, 38, 0.5)', transition: 'transform 0.2s' }}>
+                        📞 Contact Admin to Pay
+                      </a>
+                    </div>
+                  )}
                 </>
               )}
             </div>
@@ -280,39 +310,79 @@ export default function CustomerPanel() {
                   </p>
                 </div>
               ) : (
-                <div style={{ display: 'grid', gap: 16, marginTop: 20 }}>
+                <div style={{ display: 'grid', gap: 20, marginTop: 20 }}>
                   {profile.subscriptions.map(sub => (
-                    <div key={sub.id} style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, background: '#fff' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 12 }}>
+                    <div key={sub.id} style={{ 
+                      border: '3px solid #3b82f6', 
+                      borderRadius: 16, 
+                      padding: 24, 
+                      background: 'linear-gradient(135deg, #ffffff 0%, #eff6ff 100%)',
+                      boxShadow: '0 8px 24px rgba(59, 130, 246, 0.2)',
+                      transition: 'transform 0.3s ease'
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 16, paddingBottom: 16, borderBottom: '2px solid #dbeafe' }}>
                         <div>
-                          <h4 style={{ margin: 0, fontSize: 18 }}>{sub.plan_name}</h4>
-                          <p style={{ margin: '4px 0 0', fontSize: 13, color: '#6b7280' }}>
+                          <h4 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, color: '#1e40af' }}>{sub.plan_name}</h4>
+                          <p style={{ margin: '8px 0 0', fontSize: '0.95rem', color: '#1e3a8a', fontWeight: 600, background: 'linear-gradient(135deg, #dbeafe, #bfdbfe)', padding: '6px 12px', borderRadius: 8, display: 'inline-block' }}>
                             📅 {new Date(sub.start_date).toLocaleDateString()} - {new Date(sub.end_date).toLocaleDateString()}
                           </p>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: 22, fontWeight: 700, color: '#8b5cf6' }}>₹{Number(sub.amount).toLocaleString()}</div>
+                          <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#7c3aed', marginBottom: 8 }}>₹{Number(sub.amount).toLocaleString()}</div>
                           <span style={{ 
-                            fontSize: 12, 
-                            padding: '4px 10px', 
+                            fontSize: '0.85rem', 
+                            padding: '6px 14px', 
                             borderRadius: 999, 
-                            background: sub.status === 'active' ? '#dcfce7' : '#fee2e2',
-                            color: sub.status === 'active' ? '#166534' : '#991b1b',
-                            fontWeight: 700
+                            background: sub.status === 'active' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ef4444, #dc2626)',
+                            color: '#ffffff',
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                            boxShadow: sub.status === 'active' ? '0 4px 12px rgba(16, 185, 129, 0.4)' : '0 4px 12px rgba(239, 68, 68, 0.4)',
+                            letterSpacing: '0.5px'
                           }}>
                             {sub.status}
                           </span>
                         </div>
                       </div>
                       {sub.notes && (
-                        <p style={{ margin: '12px 0 0', padding: 12, background: '#f9fafb', borderRadius: 8, fontSize: 13, color: '#6b7280' }}>
-                          📝 {sub.notes}
-                        </p>
+                        <div style={{ margin: '16px 0 0', padding: '16px 18px', background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)', borderRadius: 12, fontSize: '0.95rem', color: '#78350f', fontWeight: 600, border: '2px solid #fbbf24', boxShadow: '0 4px 12px rgba(251, 191, 36, 0.2)' }}>
+                          <div style={{ display: 'flex', gap: 8, alignItems: 'start' }}>
+                            <span style={{ fontSize: '1.2rem' }}>📝</span>
+                            <div style={{ flex: 1 }}>
+                              {sub.notes.split('|').map((item, idx) => {
+                                const trimmed = item.trim();
+                                if (trimmed.startsWith('Total:') || trimmed.startsWith('Paid:') || trimmed.startsWith('Discount:') || trimmed.startsWith('Balance:')) {
+                                  const [label, value] = trimmed.split(':');
+                                  const isBalance = label === 'Balance';
+                                  return (
+                                    <div key={idx} style={{ 
+                                      display: 'flex', 
+                                      justifyContent: 'space-between', 
+                                      padding: '8px 12px', 
+                                      background: isBalance && Number(value.replace(/[^0-9]/g, '')) > 0 ? 'linear-gradient(135deg, #fee2e2, #fecaca)' : '#ffffff',
+                                      borderRadius: 8,
+                                      marginBottom: idx < sub.notes.split('|').length - 1 ? 8 : 0,
+                                      border: isBalance && Number(value.replace(/[^0-9]/g, '')) > 0 ? '2px solid #dc2626' : '1px solid #fbbf24'
+                                    }}>
+                                      <span style={{ fontWeight: 700, color: isBalance && Number(value.replace(/[^0-9]/g, '')) > 0 ? '#7f1d1d' : '#92400e' }}>{label}:</span>
+                                      <strong style={{ 
+                                        fontSize: '1.05rem', 
+                                        color: isBalance && Number(value.replace(/[^0-9]/g, '')) > 0 ? '#b91c1c' : label === 'Paid' ? '#059669' : '#92400e',
+                                        fontWeight: 900
+                                      }}>{value}</strong>
+                                    </div>
+                                  );
+                                }
+                                return <p key={idx} style={{ margin: '4px 0', color: '#78350f', fontWeight: 600 }}>{trimmed}</p>;
+                              })}
+                            </div>
+                          </div>
+                        </div>
                       )}
                       {sub.auto_renew && (
-                        <p style={{ margin: '8px 0 0', fontSize: 12, color: '#10b981' }}>
+                        <div style={{ margin: '12px 0 0', padding: '10px 14px', background: 'linear-gradient(135deg, #d1fae5, #a7f3d0)', borderRadius: 10, fontSize: '0.9rem', color: '#065f46', fontWeight: 700, border: '2px solid #10b981', display: 'inline-block' }}>
                           ✅ Auto-renewal enabled
-                        </p>
+                        </div>
                       )}
                     </div>
                   ))}
@@ -421,9 +491,9 @@ function ComplaintsTab({ complaints, onRaised }) {
                 </span>
               </div>
               {(c.technician_name || c.slot_description) && (
-                <div style={{ marginTop: 10, padding: '10px 12px', background: '#f0fdf4', borderRadius: 10, fontSize: '0.88rem' }}>
-                  {c.technician_name && <p style={{ margin: '2px 0' }}>👷 Technician: <strong>{c.technician_name}</strong></p>}
-                  {c.slot_description && <p style={{ margin: '2px 0' }}>🗓️ Slot: <strong>{c.slot_description}</strong></p>}
+                <div style={{ marginTop: 12, padding: '14px 16px', background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)', borderRadius: 12, fontSize: '0.95rem', border: '2px solid #10b981', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.15)' }}>
+                  {c.technician_name && <p style={{ margin: '0 0 6px', color: '#064e3b', fontWeight: 700, fontSize: '1rem' }}>👷 Technician: <strong style={{ color: '#065f46', fontSize: '1.05rem' }}>{c.technician_name}</strong></p>}
+                  {c.slot_description && <p style={{ margin: 0, color: '#064e3b', fontWeight: 700, fontSize: '1rem' }}>🗓️ Slot: <strong style={{ color: '#065f46', fontSize: '1.05rem' }}>{c.slot_description}</strong></p>}
                 </div>
               )}
             </div>
