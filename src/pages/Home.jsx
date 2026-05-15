@@ -113,28 +113,22 @@ export default function Home() {
         {/* Hero Image Slider */}
         <div className="hero-img-slider">
           <div className={`hero-img-slide ${slide===0?'active':''}`}>
-            <img src={heroImg} alt="CCTV Installation"/>
+            <img src="https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860538/WhatsApp_Image_2026-05-12_at_12.30.51_1_c3mehj.jpg" alt="CCTV Installation"/>
             <div className="his-overlay"/>
             <div className="his-badge"><MdVideocam/><span>HD Camera</span></div>
             <div className="his-live"><span className="hcv-live-dot"/>LIVE</div>
           </div>
           <div className={`hero-img-slide his-2 ${slide===1?'active':''}`}>
-            <img src={logoImg} alt="NetKing"/>
+            <img src="https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860537/WhatsApp_Image_2026-05-12_at_12.30.50_1_mewzt0.jpg" alt="NetKing"/>
             <div className="his-overlay"/>
             <div className="his-badge"><MdWifi/><span>Remote View</span></div>
             <div className="his-live"><span className="hcv-live-dot"/>LIVE</div>
           </div>
           <div className={`hero-img-slide his-3 ${slide===2?'active':''}`}>
-            <div className="his-cam-visual">
-              <div className="hcv-ring hcv-r1"/><div className="hcv-ring hcv-r2"/><div className="hcv-ring hcv-r3"/>
-              <div className="hcv-core">
-                <MdSecurity className="hcv-icon"/>
-                <div className="hcv-scan"/>
-                <div className="hcv-live"><span className="hcv-live-dot"/>LIVE</div>
-              </div>
-              <div className="hcv-pulse"/><div className="hcv-pulse hcv-pulse2"/>
-            </div>
+            <img src="https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860537/WhatsApp_Image_2026-05-10_at_13.55.48_1_yd4uda.jpg" alt="Security System"/>
+            <div className="his-overlay"/>
             <div className="his-badge"><MdNotificationsActive/><span>Live Alerts</span></div>
+            <div className="his-live"><span className="hcv-live-dot"/>LIVE</div>
           </div>
           <div className="his-chips">
             <div className="hcv-chip hcv-c1"><MdVideocam/><span>HD Camera</span></div>

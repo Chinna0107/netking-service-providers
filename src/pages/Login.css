@@ -20,6 +20,9 @@
 .login-logo-img img { width:160px; height:auto; border-radius:10px; object-fit:contain; display:block; border:1px solid rgba(0,0,0,.08); background:#fff; box-shadow:var(--shadow-sm); }
 .login-logo-ring { position:absolute; inset:-5px; border-radius:14px; border:1px solid rgba(224,16,32,.2); animation:pulse 3s ease-out infinite; }
 
+.login-brand { font-family:'Orbitron',sans-serif; font-size:16px; font-weight:900; line-height:1; color:#ffffff; }
+.login-brand-sub { font-size:8.5px; color:#ffffff; letter-spacing:2.5px; text-transform:uppercase; margin-top:3px; display:block; }
+
 .login-hdr { text-align:center; margin-bottom:20px; }
 .login-hdr h1 { font-size:24px; font-weight:800; color:#1a1a1a; margin-bottom:5px; }
 .login-hdr p  { font-size:13.5px; color:#999; margin-bottom:15px; }

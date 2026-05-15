@@ -6,9 +6,9 @@ import './Footer.css';
 
 const socials = [
   { ico:<FaFacebook/>, href:'#', label:'Facebook' },
-  { ico:<FaInstagram/>, href:'#', label:'Instagram' },
+  { ico:<FaInstagram/>, href:'https://www.instagram.com/netkingsecuritysystem?igsh=MXRwcHJpY2h5MHFoNw==', label:'Instagram' },
   { ico:<FaWhatsapp/>, href:'https://wa.me/919248353592', label:'WhatsApp' },
-  { ico:<FaYoutube/>, href:'#', label:'YouTube' },
+  { ico:<FaYoutube/>, href:'https://youtube.com/@netkingsecuritysystem?si=b5Ykp7WFNArPvE3f', label:'YouTube' },
 ];
 
 const quickLinks = [
@@ -32,7 +32,7 @@ export default function Footer() {
               <img src={logo} alt="NetKing"/>
               <div><span className="fl-name">NetKing</span><span className="fl-sub">Security Systems</span></div>
             </Link>
-            <p>Your trusted partner in advanced surveillance and security solutions. Protecting homes and businesses across Hyderabad since 2019.</p>
+            <p>Your trusted partner in advanced surveillance and security solutions. Protecting homes and businesses across Hyderabad since 2013.</p>
             <div className="footer-socials">
               {socials.map(({ ico, href, label }) => (
                 <a key={label} href={href} aria-label={label} className="soc-btn"
@@ -56,6 +56,15 @@ export default function Footer() {
           </div>
 
           <div className="footer-col">
+            <h4>Our Branches</h4>
+            <div className="footer-link"><MdLocationOn/>Hyderabad</div>
+            <div className="footer-link"><MdLocationOn/>Hanamkonda</div>
+            <div className="footer-link"><MdLocationOn/>Warangal</div>
+            <div className="footer-link"><MdLocationOn/>Nizamabad</div>
+            <div className="footer-link"><MdLocationOn/>Medak</div>
+          </div>
+
+          <div className="footer-col">
             <h4>Contact Us</h4>
             <a href="tel:9248353592" className="footer-contact-row">
               <span className="fcr-ico"><MdPhone/></span>
@@ -68,15 +77,6 @@ export default function Footer() {
             <a href="https://wa.me/919248353592" className="footer-wa" target="_blank" rel="noreferrer">
               <FaWhatsapp/>WhatsApp Us
             </a>
-          </div>
-
-          <div className="footer-col">
-            <h4>Our Branches</h4>
-            <div className="footer-link"><MdLocationOn/>Hyderabad</div>
-            <div className="footer-link"><MdLocationOn/>Hanamkonda</div>
-            <div className="footer-link"><MdLocationOn/>Warangal</div>
-            <div className="footer-link"><MdLocationOn/>Nizamabad</div>
-            <div className="footer-link"><MdLocationOn/>Medak</div>
           </div>
         </div>
 

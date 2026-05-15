@@ -18,10 +18,10 @@ const values = [
   { ico:<MdVerified size={28}/>,  t:'Our Values',  d:'Integrity, professionalism, and a customer-first approach in every installation and service we deliver.', cls:'vc-a' },
 ];
 const milestones = [
-  { year:'2019', t:'NetKing Founded',       d:'Started with a vision to make professional security accessible to everyone in Hyderabad.', ico:<FaShieldAlt/> },
-  { year:'2020', t:'100+ Installations',    d:'Reached our first major milestone serving homes and small businesses across the city.', ico:<FaCamera/> },
+  { year:'2013', t:'NetKing Founded',       d:'Started with a vision to make professional security accessible to everyone in Hyderabad.', ico:<FaShieldAlt/> },
+  { year:'2018', t:'100+ Installations',    d:'Reached our first major milestone serving homes and small businesses across the city.', ico:<FaCamera/> },
   { year:'2022', t:'Commercial Expansion',  d:'Expanded services to large commercial clients, offices, and industrial facilities.', ico:<MdBuild/> },
-  { year:'2024', t:'500+ Happy Clients',    d:'Trusted by over 500 clients with a 98% satisfaction rate across Hyderabad region.', ico:<FaAward/> },
+  { year:'2025', t:'500+ Happy Clients',    d:'Trusted by over 500 clients with a 98% satisfaction rate across Hyderabad region.', ico:<FaAward/> },
 ];
 const highlights = [
   { ico:<MdVerified/>, t:'Professional & Certified Technicians' },
@@ -50,7 +50,7 @@ export default function About() {
         <div className="container">
           <span className="eyebrow reveal">Who We Are</span>
           <h1 className="sec-title reveal">About <span>NetKing</span></h1>
-          <p className="sec-sub reveal">Hyderabad's trusted CCTV installation and security service provider since 2019. We protect what matters most.</p>
+          <p className="sec-sub reveal">Hyderabad's trusted CCTV installation and security service provider since 2013. We protect what matters most.</p>
           <div className="about-hero-btns reveal">
             <a href="tel:9248353592" className="btn-red"><MdPhone/>Call Us</a>
             <Link to="/contact" className="btn-outline">Get Free Quote<MdArrowForward/></Link>
@@ -97,7 +97,8 @@ export default function About() {
           <div className="story-text reveal-r">
             <span className="eyebrow" style={{textAlign:'left'}}>Our Story</span>
             <h2 className="sec-title" style={{textAlign:'left',fontSize:'clamp(22px,3vw,36px)'}}>Protecting What <span>Matters Most</span></h2>
-            <p>NetKing CCTV Service was founded in 2019 with a clear mission: to make professional-grade security accessible to every home and business in Hyderabad. What started as a small team of passionate technicians has grown into a trusted security partner for hundreds of clients.</p>
+            <p>"NetKing Security Systems" is a leading organization providing solutions related to CCTV sales & services. "NetKing Security Systems" is based in Hyderabad, Telangana, India founded by Mr. Syed Kaleem in 2013. We aim to help people better connect with the world around them with a wealth of intelligent products, we strive to identify and satisfy diverse demands by delivering intelligence at your fingertips. We are dedicated to empowering every individual to enjoy a better future by building an intelligent world that is more convenient, efficient and secure.</p>
+            <p>At NetKing Security Systems, we understand there is no One-size-fits-all solutions. As such we customize our solutions as per specific needs of the clients and go beyond the client's expectations. Many of the solutions have been developed from scratch in response to specific needs of its customers.</p>
             <p>We specialize in the installation, maintenance, and support of CCTV systems for homes, businesses, and industrial properties. Our certified technicians bring expertise and dedication to every project.</p>
             <div className="story-pts">{highlights.map(({ico,t}) => <div key={t} className="story-pt">{ico}{t}</div>)}</div>
             <div className="story-acts">

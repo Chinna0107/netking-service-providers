@@ -1,5 +1,5 @@
 /* ═══ CONTACT ═══ */
-.contact-page { background:var(--bg-dark); }
+.contact-page { background:var(--bg-dark); padding-top:100px; }
 
 /* Hero image banner */
 .contact-hero-img {

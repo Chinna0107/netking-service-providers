@@ -1,7 +1,15 @@
 .footer { background:#0d0d0d; position:relative; overflow:hidden; padding:72px 0 0; border-top:1px solid rgba(255,255,255,.07); }
 .footer::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--grad-red); }
 
-.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1.5fr; gap:44px; padding-bottom:56px; position:relative; z-index:1; }
+.footer-grid {
+  display:grid;
+  grid-template-columns:minmax(240px, 1.8fr) repeat(3, minmax(130px, 1fr)) minmax(220px, 1.35fr);
+  gap:28px;
+  padding-bottom:56px;
+  position:relative;
+  z-index:1;
+  align-items:start;
+}
 
 .footer-brand { display:flex; flex-direction:column; gap:14px; }
 .footer-logo { display:flex; align-items:center; gap:11px; text-decoration:none; width:fit-content; }

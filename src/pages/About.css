@@ -1,5 +1,5 @@
 /* ═══ ABOUT ═══ */
-.about-page { background:var(--bg-dark); }
+.about-page { background:var(--bg-dark); padding-top:100px; }
 .about-hero-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:8px; }
 .page-hero { padding:60px 0; }
 .sec-title { font-size:clamp(24px,4vw,42px); }

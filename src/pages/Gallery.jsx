@@ -1,26 +1,84 @@
 import { useEffect, useState } from 'react';
-import { MdClose, MdArrowBack, MdArrowForward, MdPhoto, MdCameraAlt } from 'react-icons/md';
+import { MdClose, MdArrowBack, MdArrowForward, MdCameraAlt } from 'react-icons/md';
 import { FaWhatsapp } from 'react-icons/fa';
 import './Gallery.css';
 
 const cats = ['All', 'CCTV Install', 'Networking', 'Access Control', 'Commercial', 'Residential'];
 
 const items = [
-  { id:1, cat:'CCTV Install',   title:'4K Dome Camera Setup',        sub:'Corporate Office, Hyderabad',   color:'#e01020' },
-  { id:2, cat:'Networking',     title:'Structured Cabling Project',  sub:'IT Park, Madhapur',             color:'#0078ff' },
-  { id:3, cat:'Access Control', title:'Biometric Entry System',      sub:'Warehouse, Uppal',              color:'#f59e0b' },
-  { id:4, cat:'Commercial',     title:'Retail Store Surveillance',   sub:'Mall, Kukatpally',              color:'#10b981' },
-  { id:5, cat:'Residential',    title:'Home Security Package',       sub:'Villa, Jubilee Hills',          color:'#8b5cf6' },
-  { id:6, cat:'CCTV Install',   title:'PTZ Camera Installation',     sub:'Factory, Patancheru',           color:'#e01020' },
-  { id:7, cat:'Networking',     title:'Fiber Optic Splicing',        sub:'Data Center, Gachibowli',       color:'#0078ff' },
-  { id:8, cat:'Commercial',     title:'Bank Branch Security',        sub:'SBI Branch, Secunderabad',      color:'#10b981' },
-  { id:9, cat:'Residential',    title:'Apartment Complex CCTV',      sub:'Kondapur Apartments',           color:'#e01020' },
-  { id:10, cat:'Access Control','title':'Smart Door Lock Setup',     sub:'Office, Banjara Hills',         color:'#f59e0b' },
-  { id:11, cat:'CCTV Install',  title:'Solar Wireless Camera',       sub:'Farm, Medak',                   color:'#e01020' },
-  { id:12, cat:'Commercial',    title:'Hospital Surveillance',       sub:'Clinic, LB Nagar',              color:'#10b981' },
+  {
+    id:1,
+    // cat:'CCTV Install',
+    // title:'4K Dome Camera Setup',
+    // sub:'Corporate Office, Hyderabad',
+    color:'#e01020',
+    image:'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860537/WhatsApp_Image_2026-05-12_at_12.30.50_2_ggs8sc.jpg',
+  },
+  {
+    id:2,
+    // cat:'Networking',
+    // title:'Structured Cabling Project',
+    // sub:'IT Park, Madhapur',
+    color:'#0078ff',
+    image:'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860538/WhatsApp_Image_2026-05-12_at_12.30.51_1_c3mehj.jpg',
+  },
+  {
+    id:3,
+    // cat:'Access Control',
+    // title:'Biometric Entry System',
+    // sub:'Warehouse, Uppal',
+    color:'#f59e0b',
+    image:'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860537/WhatsApp_Image_2026-05-12_at_12.30.50_1_mewzt0.jpg',
+  },
+  {
+    id:4,
+    // cat:'Commercial',
+    // title:'Retail Store Surveillance',
+    // sub:'Mall, Kukatpally',
+    color:'#10b981',
+    image:'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860536/WhatsApp_Image_2026-05-10_at_13.55.45_iryqfc.jpg',
+  },
+  {
+    id:5,
+    // cat:'Residential',
+    // title:'Home Security Package',
+    // sub:'Villa, Jubilee Hills',
+    color:'#8b5cf6',
+    image:'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860536/WhatsApp_Image_2026-05-12_at_12.30.48_1_o7ny3v.jpg',
+  },
+  {
+    id:6,
+    cat:'CCTV Install',
+    title:'PTZ Camera Installation',
+    sub:'Factory, Patancheru',
+    color:'#e01020',
+    image:'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860535/WhatsApp_Image_2026-05-10_at_13.55.47_2_gfuutt.jpg',
+  },
+  {
+    id:7,
+    cat:'Networking',
+    title:'Fiber Optic Splicing',
+    sub:'Data Center, Gachibowli',
+    color:'#0078ff',
+    image:'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860535/WhatsApp_Image_2026-05-10_at_13.55.46_dgpxws.jpg',
+  },
+  {
+    id:8,
+    cat:'Commercial',
+    title:'Bank Branch Security',
+    sub:'SBI Branch, Secunderabad',
+    color:'#10b981',
+    image:'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860534/WhatsApp_Image_2026-05-10_at_13.55.46_1_kquony.jpg',
+  },
+  {
+    id:9,
+    cat:'Residential',
+    title:'Apartment Complex CCTV',
+    sub:'Kondapur Apartments',
+    color:'#e01020',
+    image:'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860534/WhatsApp_Image_2026-05-10_at_13.55.46_2_il1fs4.jpg',
+  },
 ];
-
-const icons = ['📷','🔌','🔐','🏢','🏠','📡','🔧','🛡️','📹','🔑','☀️','🏥'];
 
 export default function Gallery() {
   const [cat, setCat] = useState('All');
@@ -81,30 +139,22 @@ export default function Gallery() {
         <div className="container">
           <div className="gal-grid">
             {filtered.map((item, i) => (
-              <div
+              <button
                 key={item.id}
+                type="button"
                 className="gal-card reveal"
                 data-delay={i * 50}
                 style={{'--gc':item.color}}
                 onClick={() => setLight(item)}
+                aria-label={`Open ${item.title}`}
               >
-                <div className="gal-card-img">
-                  <div className="gal-placeholder" style={{background:`linear-gradient(135deg,${item.color}22,${item.color}08)`}}>
-                    <span className="gal-emoji">{icons[item.id-1]}</span>
-                    <div className="gal-scan-line"/>
-                  </div>
-                  <div className="gal-overlay">
-                    <MdPhoto className="gal-zoom-ico"/>
-                    <span>View Details</span>
-                  </div>
-                </div>
-                <div className="gal-card-body">
-                  <span className="gal-cat-tag">{item.cat}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.sub}</p>
-                </div>
-                <div className="gal-card-bar" style={{background:`linear-gradient(90deg,${item.color},transparent)`}}/>
-              </div>
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="gal-card-img"
+                  loading="lazy"
+                />
+              </button>
             ))}
           </div>
         </div>
@@ -125,20 +175,14 @@ export default function Gallery() {
       {/* Lightbox */}
       {light && (
         <div className="gal-lightbox" onClick={()=>setLight(null)}>
-          <div className="gal-lb-card" onClick={e=>e.stopPropagation()} style={{'--gc':light.color}}>
+          <div className="gal-lb-card" onClick={e=>e.stopPropagation()}>
             <button className="gal-lb-close" onClick={()=>setLight(null)}><MdClose/></button>
-            <div className="gal-lb-img" style={{background:`linear-gradient(135deg,${light.color}33,${light.color}11)`}}>
-              <span style={{fontSize:80}}>{icons[light.id-1]}</span>
-              <div className="gal-lb-scan"/>
-            </div>
-            <div className="gal-lb-info">
-              <span className="gal-cat-tag">{light.cat}</span>
-              <h2>{light.title}</h2>
-              <p>{light.sub}</p>
-              <div className="gal-lb-actions">
-                <a href="tel:9248353592" className="btn-red">📞 Enquire Now</a>
-                <a href="https://wa.me/919248353592" className="btn-wa" target="_blank" rel="noreferrer"><FaWhatsapp/>WhatsApp</a>
-              </div>
+            <div className="gal-lb-img">
+              <img
+                src={light.image}
+                alt={light.title}
+                className="gal-lb-photo"
+              />
             </div>
             <button className="gal-lb-nav gal-lb-prev" onClick={()=>nav(-1)}><MdArrowBack/></button>
             <button className="gal-lb-nav gal-lb-next" onClick={()=>nav(1)}><MdArrowForward/></button>
