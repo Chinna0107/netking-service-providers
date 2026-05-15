@@ -6,9 +6,9 @@ import {
   MdSupportAgent, MdFlashOn, MdArrowForward,
   MdPhone, MdStar, MdNotificationsActive, MdCheckCircle,
 } from 'react-icons/md';
-import { FaWhatsapp, FaShieldAlt, FaCamera, FaTools, FaAward } from 'react-icons/fa';
+import { FaWhatsapp, FaShieldAlt, FaCamera, FaTools, FaAward, FaCode, FaMobileAlt } from 'react-icons/fa';
 import { IoShieldCheckmark } from 'react-icons/io5';
-import logoImg from '../assets/logo.jpeg';
+import logoImg from '../assets/logo2.jpeg';
 import heroImg from '../assets/hero.png';
 import './Home.css';
 
@@ -41,7 +41,7 @@ const banners = [
 
 const stats = [
   { v:'500+', l:'Installations', ico:<FaCamera /> },
-  { v:'5+',   l:'Years Active',  ico:<FaAward /> },
+  { v:'10+',   l:'Years Active',  ico:<FaAward /> },
   { v:'98%',  l:'Satisfaction',  ico:<MdStar /> },
   { v:'24/7', l:'Support',       ico:<MdSupportAgent /> },
 ];
@@ -53,6 +53,30 @@ const services = [
   { ico:<MdPhoneAndroid />, t:'Mobile App Setup',     d:'Live feed and instant push notifications directly on your smartphone or tablet.', badge:null, feats:['iOS & Android','Push Alerts','Playback'], img:'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80' },
   { ico:<MdBusiness />,     t:'Commercial CCTV',      d:'Complete office, retail and industrial surveillance solutions.', badge:null, feats:['Multi-Camera','NVR/DVR','Staff Training'], img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80' },
   { ico:<MdLock />,         t:'Access Control',       d:'Smart biometric and card-based access control systems for any property.', badge:null, feats:['Biometric','Card Access','Visitor Log'], img:'https://images.unsplash.com/photo-1558002038-1055907df827?w=600&q=80' },
+  { ico:<FaCode />,         t:'Web Development',      d:'Custom websites and web applications designed for security businesses and enterprises.', badge:null, feats:['Responsive Design','SEO Optimized','Fast Loading'], img:'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80' },
+  { ico:<FaMobileAlt />,    t:'App Development',      d:'Native and cross-platform mobile apps for iOS and Android with seamless integration.', badge:null, feats:['iOS & Android','Cloud Integration','Real-time Sync'], img:'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80' },
+];
+
+const clients = [
+  { name:'CMR Hospitals', logo:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0V_zB85fTziFT1gepjgrDo7N8nJbVxOX0qQ&s' },
+  { name:'Suzuki', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://suzuki.com&size=256' },
+  { name:'Indian Oil', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://iocl.com&size=256' },
+  { name:'Aparna', logo:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAhXgR-ndsqK3W9QPnGs2r6VcvzNDN__X-1A&s' },
+  { name:'Amul', logo:'https://i.pinimg.com/736x/95/51/1d/95511d28150d3bb1d241e996c45dbde9.jpg' },
+  { name:'Sreenidhi', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://sis.edu.in&size=256' },
+  { name:'Thyrocare', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://thyrocare.com&size=256' },
+  { name:'Kendriya Vidyalay', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://kvsangathan.nic.in&size=256' },
+];
+
+const partners = [
+  { name:'CP Plus', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://cpplusworld.com&size=256' },
+  { name:'Dahua Technologies', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dahuasecurity.com&size=256' },
+  { name:'Hikvision', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://hikvision.com&size=256' },
+  { name:'XPIA-I', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://xpia-i.com&size=256' },
+  { name:'D-Link', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dlink.com&size=256' },
+  { name:'Honeywell', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://honeywell.com&size=256' },
+  { name:'Unicam Systems', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unicamsystems.com&size=256' },
+  { name:'Prama', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.pramaindia.in&size=256' },
 ];
 
 const whyUs = [
@@ -257,7 +281,7 @@ export default function Home() {
               <div className="about-logo-ring"/>
             </div>
             <div className="about-badge">
-              <span className="about-badge-num">5+</span>
+              <span className="about-badge-num">10+</span>
               <span className="about-badge-lbl">Years of Excellence</span>
             </div>
           </div>
@@ -273,6 +297,40 @@ export default function Home() {
               ))}
             </div>
             <Link to="/about" className="btn-red" style={{width:'fit-content'}}>Learn More<MdArrowForward/></Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Clients */}
+      <section className="section clients-sec">
+        <div className="container">
+          <span className="eyebrow reveal">Our Clients</span>
+          <h2 className="sec-title reveal">Trusted By <span>Leading Brands</span></h2>
+          <p className="sec-sub reveal">We serve India's most recognized companies and organizations</p>
+          <div className="clients-grid">
+            {clients.map(({name,logo},i)=>(
+              <div key={name} className="client-card reveal" data-delay={i*50}>
+                <img src={logo} alt={name} loading="lazy" onError={(e)=>e.target.style.display='none'}/>
+                <span className="client-name">{name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Authorized Partners */}
+      <section className="section partners-sec">
+        <div className="container">
+          <span className="eyebrow reveal">Our Partners</span>
+          <h2 className="sec-title reveal">Authorized <span>Partners</span></h2>
+          <p className="sec-sub reveal">We partner with industry-leading technology providers</p>
+          <div className="partners-grid">
+            {partners.map(({name,logo},i)=>(
+              <div key={name} className="partner-card reveal" data-delay={i*50}>
+                <img src={logo} alt={name} loading="lazy" onError={(e)=>e.target.style.display='none'}/>
+                <span className="partner-name">{name}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
