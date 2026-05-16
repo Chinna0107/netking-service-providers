@@ -8,12 +8,14 @@ import {
   MdWarning,
 } from 'react-icons/md';
 import { FaVideo, FaWifi } from 'react-icons/fa';
-import {
-  countAssignedProducts,
-  formatCurrency,
-  getCollectionRate,
-  getCustomers,
-} from './adminData';
+
+const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+function authHeaders() {
+  return { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` };
+}
+
+const formatCurrency = (value) => `₹${Number(value || 0).toLocaleString('en-IN')}`;
 
 function CountUp({ target, formatter = (value) => value.toLocaleString('en-IN') }) {
   const [count, setCount] = useState(0);
@@ -53,16 +55,64 @@ function CountUp({ target, formatter = (value) => value.toLocaleString('en-IN') 
 }
 
 export default function DashboardSection({ onNavigate }) {
-  const [customers] = useState(() => getCustomers());
+  const [dashboardData, setDashboardData] = useState(null);
+  const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const cctvCustomers = customers.filter((customer) => customer.service === 'cctv');
-  const broadbandCustomers = customers.filter((customer) => customer.service === 'broadband');
-  const totalProducts = countAssignedProducts(customers);
-  const totalReceived = customers.reduce((sum, customer) => sum + customer.paidAmount, 0);
-  const totalBalance = customers.reduce((sum, customer) => sum + customer.balanceAmount, 0);
-  const dueAccounts = customers.filter((customer) => customer.balanceAmount > 0).length;
-  const collectionRate = getCollectionRate(customers);
-  const customersWithoutProducts = customers.filter((customer) => customer.products.length === 0).length;
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const loadDashboard = async () => {
+    try {
+      const [dashRes, customersRes] = await Promise.all([
+        fetch(`${API}/api/admin/dashboard`, { headers: authHeaders() }),
+        fetch(`${API}/api/admin/customers`, { headers: authHeaders() })
+      ]);
+      const dashData = await dashRes.json();
+      const customersData = await customersRes.json();
+      
+      setDashboardData(dashData);
+      setCustomers(customersData);
+      setLoading(false);
+    } catch (err) {
+      console.error('Failed to load dashboard:', err);
+      setLoading(false);
+    }
+  };
+
+  const cctvCustomers = customers.filter((c) => c.service_type === 'CC Camera' || c.service_type === 'Both');
+  const broadbandCustomers = customers.filter((c) => c.service_type === 'Broadband' || c.service_type === 'Both');
+  const totalReceived = Number(dashboardData?.totalPayments || 0);
+  const totalAssigned = Number(dashboardData?.totalAssigned || 0);
+  const totalBalance = totalAssigned - totalReceived;
+  const dueAccounts = dashboardData?.balances?.filter((b) => Number(b.remaining_balance) > 0).length || 0;
+  const collectionRate = totalAssigned > 0 ? Math.round((totalReceived / totalAssigned) * 100) : 0;
+
+  const attentionCustomers = useMemo(
+    () =>
+      (dashboardData?.balances || [])
+        .filter((b) => Number(b.remaining_balance) > 0)
+        .sort((a, b) => Number(b.remaining_balance) - Number(a.remaining_balance))
+        .slice(0, 6),
+    [dashboardData]
+  );
+
+  const recentCustomers = useMemo(
+    () =>
+      [...customers]
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .slice(0, 5),
+    [customers]
+  );
+
+  if (loading) {
+    return <div style={{ padding: 40 }}>Loading dashboard...</div>;
+  }
+
+  if (!dashboardData) {
+    return <div style={{ padding: 40, color: 'red' }}>Failed to load dashboard data</div>;
+  }
 
   const workflowCards = [
     {
@@ -79,8 +129,8 @@ export default function DashboardSection({ onNavigate }) {
       icon: <MdInventory />,
       title: 'Add Products To Customers',
       description: 'Assign installed devices, plans, and accessories to the correct customer.',
-      statLabel: 'Products mapped',
-      statValue: totalProducts,
+      statLabel: 'Total assigned',
+      statValue: formatCurrency(totalAssigned),
       tone: 'green',
     },
     {
@@ -104,9 +154,9 @@ export default function DashboardSection({ onNavigate }) {
     },
     {
       icon: <MdInventory />,
-      label: 'Assigned Products',
-      value: totalProducts,
-      formatter: (value) => value.toLocaleString('en-IN'),
+      label: 'Total Assigned',
+      value: totalAssigned,
+      formatter: (value) => formatCurrency(value),
       tone: 'green',
     },
     {
@@ -124,30 +174,6 @@ export default function DashboardSection({ onNavigate }) {
       tone: 'amber',
     },
   ];
-
-  const attentionCustomers = useMemo(
-    () =>
-      [...customers]
-        .sort((first, second) => {
-          const firstScore = first.balanceAmount + (first.products.length === 0 ? 5000 : 0);
-          const secondScore = second.balanceAmount + (second.products.length === 0 ? 5000 : 0);
-          return secondScore - firstScore;
-        })
-        .slice(0, 6),
-    [customers]
-  );
-
-  const recentCustomers = useMemo(
-    () =>
-      [...customers]
-        .sort((first, second) => {
-          const firstDate = new Date(first.createdAt || 0).getTime();
-          const secondDate = new Date(second.createdAt || 0).getTime();
-          return secondDate - firstDate;
-        })
-        .slice(0, 5),
-    [customers]
-  );
 
   return (
     <div className="dash-root">
@@ -176,7 +202,7 @@ export default function DashboardSection({ onNavigate }) {
         <div className="dashboard-spotlight-card">
           <span>Collection Rate</span>
           <strong>{collectionRate}%</strong>
-          <p>{formatCurrency(totalReceived)} received out of {formatCurrency(totalReceived + totalBalance)}</p>
+          <p>{formatCurrency(totalReceived)} received out of {formatCurrency(totalAssigned)}</p>
           <div className="spotlight-progress">
             <div className="spotlight-progress-track">
               <div className="spotlight-progress-fill" style={{ width: `${collectionRate}%` }} />
@@ -248,9 +274,9 @@ export default function DashboardSection({ onNavigate }) {
             <div className="mix-row">
               <div className="mix-label">
                 <MdInventory />
-                <span>Customers without products</span>
+                <span>Accounts with balance</span>
               </div>
-              <strong>{customersWithoutProducts}</strong>
+              <strong>{dueAccounts}</strong>
             </div>
           </div>
         </div>
@@ -264,7 +290,7 @@ export default function DashboardSection({ onNavigate }) {
           <div className="payment-overview">
             <div className="po-row">
               <span>Total Billing</span>
-              <strong>{formatCurrency(totalReceived + totalBalance)}</strong>
+              <strong>{formatCurrency(totalAssigned)}</strong>
             </div>
             <div className="po-row">
               <span>Received</span>
@@ -289,21 +315,14 @@ export default function DashboardSection({ onNavigate }) {
             </div>
           ) : (
             <div className="attention-list">
-              {attentionCustomers.map((customer) => (
-                <div key={customer.id} className="attention-item">
+              {attentionCustomers.map((balance) => (
+                <div key={balance.customer_id} className="attention-item">
                   <div>
-                    <strong>{customer.customerName}</strong>
-                    <span>
-                      {customer.service === 'cctv' ? 'CCTV / NKSS' : 'Broadband / NKBB'}
-                    </span>
+                    <strong>{balance.name}</strong>
+                    <span>{balance.email}</span>
                   </div>
                   <div className="attention-tags">
-                    {customer.balanceAmount > 0 && (
-                      <span className="attention-tag due">{formatCurrency(customer.balanceAmount)} due</span>
-                    )}
-                    {customer.products.length === 0 && (
-                      <span className="attention-tag neutral">No products mapped</span>
-                    )}
+                    <span className="attention-tag due">{formatCurrency(balance.remaining_balance)} due</span>
                   </div>
                 </div>
               ))}
@@ -327,21 +346,16 @@ export default function DashboardSection({ onNavigate }) {
             <div className="recent-customers-list">
               {recentCustomers.map((customer) => (
                 <div key={customer.id} className="rc-item">
-                  <div className="rc-avatar">{customer.customerName.charAt(0)}</div>
+                  <div className="rc-avatar">{customer.name?.charAt(0) || 'C'}</div>
                   <div className="rc-info">
-                    <strong>{customer.customerName}</strong>
+                    <strong>{customer.name}</strong>
                     <span>
-                      {customer.mobile} • {customer.city}
+                      {customer.phone} • {customer.city}
                     </span>
                   </div>
                   <div className="rc-right">
-                    <span className={`rc-service ${customer.service}`}>
-                      {customer.service === 'cctv' ? 'NKSS' : 'NKBB'}
-                    </span>
-                    <span className={`rc-balance ${customer.balanceAmount > 0 ? 'due' : 'clear'}`}>
-                      {customer.balanceAmount > 0
-                        ? `${formatCurrency(customer.balanceAmount)} due`
-                        : 'Paid'}
+                    <span className={`rc-service ${customer.service_type === 'CC Camera' ? 'cctv' : 'broadband'}`}>
+                      {customer.service_type === 'CC Camera' ? 'NKSS' : 'NKBB'}
                     </span>
                   </div>
                 </div>

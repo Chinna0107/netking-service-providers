@@ -37,7 +37,8 @@
 }
 
 .crm-root {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 320px minmax(0, 1fr);
   background:
@@ -169,14 +170,13 @@
   background: transparent;
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+  transition: background 0.22s ease, border-color 0.22s ease;
   text-align: left;
   position: relative;
 }
 
 .sb-item:hover,
 .sb-item.active {
-  transform: translateX(4px);
   background: rgba(255, 255, 255, 0.09);
   border-color: rgba(255, 255, 255, 0.1);
   color: #fff;
@@ -228,6 +228,8 @@
 
 .crm-main {
   min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
@@ -242,8 +244,9 @@
   gap: 16px;
   padding: 22px 28px;
   border-bottom: 1px solid var(--admin-border);
-  background: rgba(247, 243, 238, 0.88);
-  backdrop-filter: blur(16px);
+  background: rgba(247, 243, 238, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .crm-menu-btn {

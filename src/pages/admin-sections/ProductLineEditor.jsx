@@ -80,6 +80,13 @@ export default function ProductLineEditor({
               />
 
               <input
+                type="text"
+                placeholder="Vendor Code"
+                value={product.vendorCode}
+                onChange={(event) => updateProduct(index, 'vendorCode', event.target.value)}
+              />
+
+              <input
                 type="number"
                 min="1"
                 placeholder="Qty"

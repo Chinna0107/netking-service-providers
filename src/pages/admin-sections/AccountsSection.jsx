@@ -5,6 +5,12 @@ export default function AccountsSection() {
   const [transactions, setTransactions] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
 
+  // Filters
+  const [searchTerm, setSearchTerm] = useState('');
+  const [typeFilter, setTypeFilter] = useState('all');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
   useEffect(() => {
     loadTransactions();
   }, []);
@@ -52,12 +58,21 @@ export default function AccountsSection() {
 
   const addTransaction = (formData) => {
     const newTransaction = { ...formData, id: `TXN-${Date.now()}` };
-    saveTransactions([...transactions, newTransaction]);
+    saveTransactions([newTransaction, ...transactions]); // Prepend new transactions
     setShowAddForm(false);
   };
 
-  const totalIncome = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-  const totalExpense = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+  const filteredTransactions = transactions.filter(t => {
+    const matchesSearch = t.category.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          t.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = typeFilter === 'all' || t.type === typeFilter;
+    const matchesStartDate = !startDate || t.date >= startDate;
+    const matchesEndDate = !endDate || t.date <= endDate;
+    return matchesSearch && matchesType && matchesStartDate && matchesEndDate;
+  });
+
+  const totalIncome = filteredTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+  const totalExpense = filteredTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
   const netProfit = totalIncome - totalExpense;
 
   return (
@@ -67,6 +82,51 @@ export default function AccountsSection() {
         <button className="add-btn" onClick={() => setShowAddForm(true)}>
           <MdAdd /> Add Transaction
         </button>
+      </div>
+
+      <div className="filter-toolbar" style={{ background: '#fff', padding: '16px', borderRadius: '16px', border: '1px solid #e5e7eb', marginBottom: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#6b7280', marginBottom: '6px' }}>Search</label>
+            <input 
+              type="text" 
+              placeholder="Category or description..." 
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db' }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#6b7280', marginBottom: '6px' }}>Transaction Type</label>
+            <select 
+              value={typeFilter} 
+              onChange={e => setTypeFilter(e.target.value)}
+              style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db' }}
+            >
+              <option value="all">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#6b7280', marginBottom: '6px' }}>Start Date</label>
+            <input 
+              type="date" 
+              value={startDate}
+              onChange={e => setStartDate(e.target.value)}
+              style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db' }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#6b7280', marginBottom: '6px' }}>End Date</label>
+            <input 
+              type="date" 
+              value={endDate}
+              onChange={e => setEndDate(e.target.value)}
+              style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db' }}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="accounts-summary">
@@ -106,21 +166,29 @@ export default function AccountsSection() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map(transaction => (
-              <tr key={transaction.id}>
-                <td>{transaction.date}</td>
-                <td>
-                  <span className={`type-badge ${transaction.type}`}>
-                    {transaction.type}
-                  </span>
-                </td>
-                <td>{transaction.category}</td>
-                <td>{transaction.description}</td>
-                <td className={transaction.type}>
-                  {transaction.type === 'income' ? '+' : '-'}₹{transaction.amount.toLocaleString()}
+            {filteredTransactions.length === 0 ? (
+              <tr>
+                <td colSpan="5" style={{ textAlign: 'center', padding: '32px', color: '#6b7280' }}>
+                  No transactions match your filters.
                 </td>
               </tr>
-            ))}
+            ) : (
+              filteredTransactions.map(transaction => (
+                <tr key={transaction.id}>
+                  <td>{new Date(transaction.date).toLocaleDateString()}</td>
+                  <td>
+                    <span className={`type-badge ${transaction.type}`}>
+                      {transaction.type}
+                    </span>
+                  </td>
+                  <td>{transaction.category}</td>
+                  <td>{transaction.description}</td>
+                  <td className={transaction.type} style={{ fontWeight: 700 }}>
+                    {transaction.type === 'income' ? '+' : '-'}₹{transaction.amount.toLocaleString()}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

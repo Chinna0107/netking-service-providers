@@ -31,7 +31,7 @@ export const SERVICE_PRODUCT_OPTIONS = {
   ],
 };
 
-export const PAYMENT_METHODS = ['Cash', 'UPI', 'Bank Transfer', 'Card', 'Cheque'];
+export const PAYMENT_METHODS = ['Cash', 'UPI', 'Bank Transfer', 'Card', 'Cheque', 'Others'];
 
 const normalizeService = (service) => (service === 'broadband' ? 'broadband' : 'cctv');
 
@@ -62,6 +62,7 @@ export const getEmptyProduct = (service = 'cctv') => {
     type: SERVICE_PRODUCT_OPTIONS[normalizedService][0],
     model: '',
     serialNo: '',
+    vendorCode: '',
     quantity: 1,
     unitPrice: 0,
   };
@@ -72,14 +73,15 @@ export const getProductLineTotal = (product = {}) =>
 
 export const normalizeProduct = (product = {}, service = 'cctv') => {
   const normalizedService = normalizeService(service);
-  const quantity = Math.max(1, toNumber(product.quantity) || 1);
+  const quantity = product.quantity === '' ? '' : Math.max(1, toNumber(product.quantity) || 1);
 
   return {
-    type: product.type || SERVICE_PRODUCT_OPTIONS[normalizedService][0],
+    type: product.type !== undefined ? product.type : SERVICE_PRODUCT_OPTIONS[normalizedService][0],
     model: product.model || '',
     serialNo: product.serialNo || '',
+    vendorCode: product.vendorCode || '',
     quantity,
-    unitPrice: toNumber(product.unitPrice),
+    unitPrice: product.unitPrice === '' ? '' : toNumber(product.unitPrice),
   };
 };
 
@@ -119,7 +121,6 @@ export const getEmptyCustomerForm = (service = 'cctv') => {
     userId: '',
     password: '',
     appAccess: 'Yes - Mobile App Access',
-    vendorCode: '',
     expireDate: '',
     installTech: '',
     totalAmount: 0,

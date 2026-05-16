@@ -8,6 +8,7 @@ import {
   MdRemove,
 } from 'react-icons/md';
 import { FaVideo, FaWifi } from 'react-icons/fa';
+import { PAYMENT_METHODS } from './adminData';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -24,6 +25,11 @@ export default function ProductsSection() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  
+  const [paymentAmount, setPaymentAmount] = useState('');
+  const [paymentDate, setPaymentDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [paymentMethod, setPaymentMethod] = useState('Cash');
 
   useEffect(() => {
     loadCustomers();
@@ -66,9 +72,10 @@ export default function ProductsSection() {
       const editorProducts = data.map(p => ({
         type: p.product_name,
         model: p.product_description || '',
-        serialNo: '',
         quantity: p.quantity,
         unitPrice: Number(p.price),
+        serialNo: p.serial_number || '',
+        vendorCode: p.vendor_code || '',
       }));
       
       setProducts(editorProducts.length > 0 ? editorProducts : [getEmptyProduct()]);
@@ -82,6 +89,7 @@ export default function ProductsSection() {
     type: '',
     model: '',
     serialNo: '',
+    vendorCode: '',
     quantity: 1,
     unitPrice: 0,
   });
@@ -106,6 +114,7 @@ export default function ProductsSection() {
   const saveProductsToCustomer = async () => {
     if (!selectedCustomer) return;
 
+    setIsSaving(true);
     try {
       // Delete all existing products for this customer
       const existingRes = await fetch(`${API}/api/admin/customers/${selectedCustomer.id}/products`, {
@@ -151,8 +160,23 @@ export default function ProductsSection() {
             productId: dbProduct.id,
             quantity: product.quantity,
             price: product.unitPrice,
+            serialNumber: product.serialNo,
+            vendorCode: product.vendorCode,
           }),
         });
+      }
+
+      // Process payment if entered
+      if (Number(paymentAmount) > 0) {
+        await fetch(`${API}/api/admin/customers/${selectedCustomer.id}/payments`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({ 
+            amount: Number(paymentAmount), 
+            note: `${paymentMethod} - Payment for assigned products on ${paymentDate}` 
+          }),
+        });
+        setPaymentAmount('');
       }
 
       setShowSuccess(true);
@@ -162,6 +186,8 @@ export default function ProductsSection() {
       loadCustomers();
     } catch (err) {
       alert('Failed to save products: ' + err.message);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -371,6 +397,12 @@ export default function ProductsSection() {
                     onChange={(e) => updateProduct(index, 'serialNo', e.target.value)}
                   />
                   <input
+                    type="text"
+                    placeholder="Vendor Code"
+                    value={product.vendorCode}
+                    onChange={(e) => updateProduct(index, 'vendorCode', e.target.value)}
+                  />
+                  <input
                     type="number"
                     placeholder="Qty"
                     min="1"
@@ -409,9 +441,39 @@ export default function ProductsSection() {
             </div>
           </div>
 
+          <div className="admin-card">
+            <div className="admin-card-header">
+              <div>
+                <span className="admin-card-eyebrow">Collections</span>
+                <h3>Record Payment</h3>
+                <p>Optionally record a payment received from the customer for these products.</p>
+              </div>
+            </div>
+            <div className="form-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+              <input
+                type="number"
+                min="0"
+                placeholder="Amount Received (₹)"
+                value={paymentAmount}
+                onChange={(e) => setPaymentAmount(e.target.value)}
+              />
+              <input
+                type="date"
+                value={paymentDate}
+                onChange={(e) => setPaymentDate(e.target.value)}
+              />
+              <select
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              >
+                {PAYMENT_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
+              </select>
+            </div>
+          </div>
+
           <div className="form-submit-row">
-            <button type="button" className="primary-action-btn" onClick={saveProductsToCustomer}>
-              <MdCheckCircle /> Save & Sync Products To Customer
+            <button type="button" className="primary-action-btn" onClick={saveProductsToCustomer} disabled={isSaving}>
+              <MdCheckCircle /> {isSaving ? 'Saving...' : 'Save & Sync Products To Customer'}
             </button>
           </div>
         </div>

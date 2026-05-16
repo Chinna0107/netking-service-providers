@@ -19,6 +19,7 @@ import {
   isMeaningfulProduct,
   saveCustomers,
   toNumber,
+  PAYMENT_METHODS,
 } from './adminData';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -28,6 +29,7 @@ export default function AddCustomerSection() {
   const [form, setForm] = useState(() => getEmptyCustomerForm('cctv'));
   const [showSuccess, setShowSuccess] = useState(false);
   const [apiError, setApiError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const [portalStats, setPortalStats] = useState(() => {
     const customers = getCustomers();
     return {
@@ -72,6 +74,7 @@ export default function AddCustomerSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setApiError('');
+    setIsSaving(true);
     // Save to localStorage (existing flow)
     const customers = getCustomers();
     const nextCustomer = buildCustomerPayload({ ...form, service: serviceType });
@@ -81,7 +84,7 @@ export default function AddCustomerSection() {
     // Also save to backend DB
     try {
       const token = localStorage.getItem('token');
-      await fetch(`${API}/api/admin/customers`, {
+      const res = await fetch(`${API}/api/admin/customers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -95,7 +98,51 @@ export default function AddCustomerSection() {
           user_id: form.userId,
         }),
       });
-    } catch { /* non-blocking */ }
+
+      if (res.ok) {
+        const newCustomer = await res.json();
+        
+        // Save products
+        for (const product of form.products) {
+          if (!product.type || product.unitPrice === 0) continue;
+          
+          // Check if product exists in catalog
+          const catalogRes = await fetch(`${API}/api/admin/products`, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
+          const catalog = await catalogRes.json();
+          let dbProduct = catalog.find(p => p.name === product.type);
+          
+          if (!dbProduct) {
+            const prodRes = await fetch(`${API}/api/admin/products`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+              body: JSON.stringify({ name: product.type, description: product.model || '', price: product.unitPrice }),
+            });
+            dbProduct = await prodRes.json();
+          }
+
+          // Assign product to customer
+          await fetch(`${API}/api/admin/customers/${newCustomer.id}/products`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify({ productId: dbProduct.id, quantity: product.quantity, price: product.unitPrice }),
+          });
+        }
+
+        // Save advance payment
+        const explicitPaid = Math.max(toNumber(form.paidAmount), toNumber(form.advancePay));
+        if (explicitPaid > 0) {
+          await fetch(`${API}/api/admin/customers/${newCustomer.id}/payments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify({ amount: explicitPaid, note: `${form.paymentMethod || 'Cash'} - Opening received amount` }),
+          });
+        }
+      }
+    } catch (err) { 
+      console.error('Failed to sync to database:', err);
+    } finally {
+      setIsSaving(false);
+    }
 
     setShowSuccess(true);
     setTimeout(() => {
@@ -257,9 +304,9 @@ export default function AddCustomerSection() {
                   <>
                     <input
                       type="text"
-                      name="vendorCode"
-                      placeholder="Vendor Code"
-                      value={form.vendorCode}
+                      name="currentLocation"
+                      placeholder="Current Location / Unit"
+                      value={form.currentLocation}
                       onChange={handleChange}
                     />
 
@@ -272,20 +319,13 @@ export default function AddCustomerSection() {
 
                 {serviceType === 'cctv' && (
                   <>
-                    <select
-                      name="currentLocation"
-                      value={form.currentLocation}
-                      onChange={handleChange}
-                    >
-                      <option value="Unit 1">Unit 1</option>
-                      <option value="Unit 2">Unit 2</option>
-                      <option value="Unit 3">Unit 3</option>
-                    </select>
-
                     <select name="branch" value={form.branch} onChange={handleChange}>
-                      <option value="Branch 1">Branch 1</option>
-                      <option value="Branch 2">Branch 2</option>
-                      <option value="Branch 3">Branch 3</option>
+                      <option value="">Select Branch</option>
+                      <option value="Hyderabad">Hyderabad</option>
+                      <option value="Hanamkonda">Hanamkonda</option>
+                      <option value="Warangal">Warangal</option>
+                      <option value="Nizamabad">Nizamabad</option>
+                      <option value="Medak">Medak</option>
                     </select>
                   </>
                 )}
@@ -352,6 +392,17 @@ export default function AddCustomerSection() {
                   />
                 </div>
                 <div className="field-stack">
+                  <label htmlFor="customer-payment-method">Payment Method</label>
+                  <select
+                    id="customer-payment-method"
+                    name="paymentMethod"
+                    value={form.paymentMethod || 'Cash'}
+                    onChange={handleChange}
+                  >
+                    {PAYMENT_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
+                  </select>
+                </div>
+                <div className="field-stack">
                   <label htmlFor="customer-balance-remaining">Remaining Balance To Collect</label>
                   <input
                     id="customer-balance-remaining"
@@ -394,8 +445,8 @@ export default function AddCustomerSection() {
             </div>
 
             <div className="form-submit-row">
-              <button type="submit" className="primary-action-btn">
-                <MdCheckCircle /> Save Customer
+              <button type="submit" className="primary-action-btn" disabled={isSaving}>
+                <MdCheckCircle /> {isSaving ? 'Saving...' : 'Save Customer'}
               </button>
             </div>
           </form>

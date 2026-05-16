@@ -25,7 +25,7 @@ export default function TicketsSection() {
     } catch (err) { setError(err.message); }
   };
 
-  const updateComplaint = async (id, patch) => {
+  const updateComplaint = async (id, patch, onSuccess, onError) => {
     try {
       const res = await fetch(`${API}/api/admin/complaints/${id}`, {
         method: 'PATCH',
@@ -36,7 +36,11 @@ export default function TicketsSection() {
       if (!res.ok) throw new Error(data.error);
       setComplaints(prev => prev.map(c => c.id === id ? data : c));
       setEditingId(null);
-    } catch (err) { setError(err.message); }
+      if (onSuccess) onSuccess();
+    } catch (err) { 
+      setError(err.message); 
+      if (onError) onError();
+    }
   };
 
   const filtered = complaints.filter(c => {
@@ -76,7 +80,7 @@ export default function TicketsSection() {
             isEditing={editingId === c.id}
             onEdit={() => setEditingId(c.id)}
             onClose={() => setEditingId(null)}
-            onUpdate={(patch) => updateComplaint(c.id, patch)}
+            onUpdate={(patch, onSuccess, onError) => updateComplaint(c.id, patch, onSuccess, onError)}
           />
         ))}
       </div>
@@ -90,6 +94,12 @@ function ComplaintCard({ complaint: c, isEditing, onEdit, onClose, onUpdate }) {
     slot_description: c.slot_description || '',
     technician_name: c.technician_name || '',
   });
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleUpdate = () => {
+    setIsSaving(true);
+    onUpdate(form, () => setIsSaving(false), () => setIsSaving(false));
+  };
 
   const priorityColor = { high: '#dc2626', medium: '#f59e0b', low: '#10b981' }[c.priority] || '#6b7280';
   const statusColor = { open: '#f59e0b', 'in-progress': '#3b82f6', resolved: '#10b981' }[c.status] || '#6b7280';
@@ -136,7 +146,9 @@ function ComplaintCard({ complaint: c, isEditing, onEdit, onClose, onUpdate }) {
               value={form.slot_description} onChange={e => setForm({ ...form, slot_description: e.target.value })} />
           </div>
           <div className="card-actions" style={{ marginTop: 10 }}>
-            <button className="edit-btn" onClick={() => onUpdate(form)}>Save</button>
+            <button className="edit-btn" onClick={handleUpdate} disabled={isSaving}>
+              {isSaving ? 'Saving...' : 'Save'}
+            </button>
             <button className="delete-btn" onClick={onClose}><MdClose /> Cancel</button>
           </div>
         </div>

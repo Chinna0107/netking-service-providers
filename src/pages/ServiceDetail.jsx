@@ -236,6 +236,17 @@ const serviceData = {
   },
 };
 
+const serviceImages = {
+  'cctv-installation': 'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860537/WhatsApp_Image_2026-05-10_at_13.55.48_1_yd4uda.jpg',
+  'system-maintenance': 'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860539/WhatsApp_Image_2026-05-12_at_12.30.53_n8oxpm.jpg',
+  'remote-monitoring': 'https://cdn.iplocation.net/assets/images/blog/2024/featured/remote-camera.png',
+  'mobile-app-integration': 'https://www.cctvcamerapros.com/v/4K/View-Security-Cameras-Android-App.jpg',
+  'commercial-surveillance': 'https://www.techaptiva.com/wp-content/uploads/2022/08/cctv-security-technology-with-lock-icon-digital-remix-scaled.jpg',
+  'home-security': 'https://content.jdmagicbox.com/v2/comp/bangalore/s8/080pxx80.xx80.240816202547.r7s8/catalogue/future-security-systems-marathahalli-bangalore-security-system-installation-services-nmzayr38cp.jpg',
+  'access-control': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQft8a1F-hN3oKjOG07scinQdBYEyt_iSV2Gw&s',
+  'alarm-systems': 'https://content.jdmagicbox.com/v2/comp/bangalore/s9/080pxx80.xx80.170208152937.s6s9/catalogue/quantum-techno-solutions-kammanahalli-bangalore-security-system-dealers-0vf6imnqlz.jpg',
+};
+
 export default function ServiceDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -261,12 +272,12 @@ export default function ServiceDetail() {
     <main className="sd-page" style={{'--svc-color': svc.color}}>
 
       {/* Hero */}
-      <section className="sd-hero">
-        <div className="sd-hero-bg">
+      <section className="sd-hero" style={{ backgroundImage: `url(${serviceImages[slug]})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+        <div className="sd-hero-bg" style={{ backgroundColor: 'rgba(0,0,0,0.7)', position: 'absolute', inset: 0 }}>
           <div className="sd-orb sd-o1"/><div className="sd-orb sd-o2"/>
           <div className="sd-grid"/>
         </div>
-        <div className="container sd-hero-inner">
+        <div className="container sd-hero-inner" style={{ position: 'relative', zIndex: 1 }}>
           <button className="sd-back reveal" onClick={()=>navigate('/services')}>
             <MdArrowBack/>All Services
           </button>
@@ -285,13 +296,18 @@ export default function ServiceDetail() {
                 <a href="https://wa.me/919248353592" className="btn-wa" target="_blank" rel="noreferrer"><FaWhatsapp/>WhatsApp</a>
               </div>
             </div>
-            <div className="sd-hero-visual reveal-r">
-              <div className="sd-vis-ring sd-vr1"/><div className="sd-vis-ring sd-vr2"/>
-              <div className="sd-vis-core">
-                <span className="sd-vis-emoji">{svc.emoji}</span>
-                <div className="sd-vis-scan"/>
-              </div>
-              <div className="sd-vis-pulse"/><div className="sd-vis-pulse sd-vp2"/>
+            <div className="sd-hero-visual reveal-r" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <img 
+                src={serviceImages[slug]} 
+                alt={svc.title} 
+                style={{
+                  width: '100%', 
+                  maxWidth: '500px', 
+                  borderRadius: '16px', 
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+                  border: '4px solid rgba(255,255,255,0.1)'
+                }} 
+              />
             </div>
           </div>
         </div>
@@ -311,13 +327,26 @@ export default function ServiceDetail() {
                 ))}
               </div>
             </div>
-            <div className="sd-feats-box reveal-r">
-              <h3>Key Features</h3>
-              <ul className="sd-feats-list">
-                {svc.features.map(f=>(
-                  <li key={f}><MdCheckCircle/>{f}</li>
-                ))}
-              </ul>
+            <div className="sd-feats-box reveal-r" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <img 
+                src={serviceImages[slug]} 
+                alt={svc.title} 
+                style={{
+                  width: '100%', 
+                  height: '240px',
+                  objectFit: 'cover',
+                  borderRadius: '12px', 
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+                }} 
+              />
+              <div>
+                <h3>Key Features</h3>
+                <ul className="sd-feats-list">
+                  {svc.features.map(f=>(
+                    <li key={f}><MdCheckCircle/>{f}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import {
   MdCalendarToday,
 } from 'react-icons/md';
 import { FaVideo, FaWifi } from 'react-icons/fa';
+import { PAYMENT_METHODS } from './adminData';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -73,6 +74,7 @@ export default function SubscriptionsSection() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     loadCustomers();
@@ -122,6 +124,8 @@ export default function SubscriptionsSection() {
           expireDate: latest.end_date || '',
           totalAmount: notesMatch ? Number(notesMatch[1]) : Number(latest.amount) || 0,
           paidAmount: notesMatch ? Number(notesMatch[2]) : 0,
+          paymentDate: new Date().toISOString().split('T')[0],
+          paymentMethod: 'Cash',
           discount: notesMatch ? Number(notesMatch[3]) : 0,
           balanceAmount: notesMatch ? Number(notesMatch[4]) : Number(latest.amount) || 0,
           notes: latest.notes?.split(' | ').slice(4).join(' | ') || '',
@@ -141,6 +145,8 @@ export default function SubscriptionsSection() {
     expireDate: '',
     totalAmount: 0,
     paidAmount: 0,
+    paymentDate: new Date().toISOString().split('T')[0],
+    paymentMethod: 'Cash',
     discount: 0,
     balanceAmount: 0,
     notes: '',
@@ -170,6 +176,7 @@ export default function SubscriptionsSection() {
       return;
     }
 
+    setIsSaving(true);
     try {
       // Delete existing subscriptions
       const existingRes = await fetch(`${API}/api/admin/customers/${selectedCustomer.id}/subscription`, {
@@ -198,11 +205,25 @@ export default function SubscriptionsSection() {
         }),
       });
 
+      // Record Payment
+      if (Number(subscription.paidAmount) > 0) {
+        await fetch(`${API}/api/admin/customers/${selectedCustomer.id}/payments`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({
+            amount: Number(subscription.paidAmount),
+            note: `${subscription.paymentMethod || 'Cash'} - Payment for subscription: ${subscription.package} on ${subscription.paymentDate}`
+          }),
+        });
+      }
+
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2000);
       loadCustomers();
     } catch (err) {
       alert('Failed to save subscription: ' + err.message);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -478,6 +499,31 @@ export default function SubscriptionsSection() {
 
                   <div>
                     <label style={{ display: 'block', marginBottom: 8, fontSize: 14, fontWeight: 700 }}>
+                      Payment Date
+                    </label>
+                    <input
+                      type="date"
+                      value={subscription.paymentDate}
+                      onChange={(e) => setSubscription({ ...subscription, paymentDate: e.target.value })}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: 12, border: '1px solid #e5e7eb' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', marginBottom: 8, fontSize: 14, fontWeight: 700 }}>
+                      Payment Method
+                    </label>
+                    <select
+                      value={subscription.paymentMethod || 'Cash'}
+                      onChange={(e) => setSubscription({ ...subscription, paymentMethod: e.target.value })}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: 12, border: '1px solid #e5e7eb', background: '#fff' }}
+                    >
+                      {PAYMENT_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', marginBottom: 8, fontSize: 14, fontWeight: 700 }}>
                       Discount
                     </label>
                     <input
@@ -547,8 +593,8 @@ export default function SubscriptionsSection() {
               </div>
 
               <div className="form-submit-row">
-                <button type="button" className="primary-action-btn" onClick={saveSubscription}>
-                  <MdCheckCircle /> Save & Sync Subscription To Customer
+                <button type="button" className="primary-action-btn" onClick={saveSubscription} disabled={isSaving}>
+                  <MdCheckCircle /> {isSaving ? 'Saving...' : 'Save & Sync Subscription To Customer'}
                 </button>
               </div>
             </>

@@ -64,7 +64,7 @@ const services = [
   {
     slug: 'access-control',
     ico: <MdLock />, t: 'Access Control Systems', cat: 'Security',
-    price: 'From ₹4,999', rating: 4.9, reviews: 55,
+    price: '', rating: 4.9, reviews: 55,
     desc: 'Smart access control solutions including biometric, card-based, and keypad entry systems.',
     feats: ['Biometric Readers', 'Card Access', 'Door Controllers', 'Visitor Management'],
     badge: null, color: '#e01020',
@@ -72,7 +72,7 @@ const services = [
   {
     slug: 'alarm-systems',
     ico: <MdNotificationsActive />, t: 'Alarm Systems', cat: 'Security',
-    price: 'From ₹2,999', rating: 4.7, reviews: 68,
+    price: '', rating: 4.7, reviews: 68,
     desc: 'Advanced intrusion detection and alarm systems with instant notification and response.',
     feats: ['Motion Sensors', 'Door/Window Sensors', 'Siren Alerts', 'Central Monitoring'],
     badge: null, color: '#e01020',
@@ -112,6 +112,17 @@ const statsData = [
 ];
 
 const badgeMap = { bs: ['pb-bs', 'Best Seller'], new: ['pb-new', 'New'], prem: ['pb-prem', 'Premium'] };
+
+const serviceImages = {
+  'cctv-installation': 'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860537/WhatsApp_Image_2026-05-10_at_13.55.48_1_yd4uda.jpg',
+  'system-maintenance': 'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860539/WhatsApp_Image_2026-05-12_at_12.30.53_n8oxpm.jpg',
+  'remote-monitoring': 'https://cdn.iplocation.net/assets/images/blog/2024/featured/remote-camera.png',
+  'mobile-app-integration': 'https://www.cctvcamerapros.com/v/4K/View-Security-Cameras-Android-App.jpg',
+  'commercial-surveillance': 'https://www.techaptiva.com/wp-content/uploads/2022/08/cctv-security-technology-with-lock-icon-digital-remix-scaled.jpg',
+  'home-security': 'https://content.jdmagicbox.com/v2/comp/bangalore/s8/080pxx80.xx80.240816202547.r7s8/catalogue/future-security-systems-marathahalli-bangalore-security-system-installation-services-nmzayr38cp.jpg',
+  'access-control': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQft8a1F-hN3oKjOG07scinQdBYEyt_iSV2Gw&s',
+  'alarm-systems': 'https://content.jdmagicbox.com/v2/comp/bangalore/s9/080pxx80.xx80.170208152937.s6s9/catalogue/quantum-techno-solutions-kammanahalli-bangalore-security-system-dealers-0vf6imnqlz.jpg',
+};
 
 function CountUp({ target, suffix }) {
   const [val, setVal] = useState(0);
@@ -153,6 +164,7 @@ export default function Services() {
   }, []);
 
   const filtered = cat === 'All' ? services : services.filter(s => s.cat === cat);
+
 
   return (
     <main className="services-page">
@@ -240,6 +252,8 @@ export default function Services() {
                 {badge && (
                   <span className={`svc-badge ${badgeMap[badge][0]}`}>{badgeMap[badge][1]}</span>
                 )}
+                {/* Service Image */}
+                <img src={serviceImages[slug]} alt={t} className="svc-card-img" loading="lazy" />
                 <div className="svc-card-top">
                   <div className="svc-card-ico">{ico}</div>
                   <div className="svc-card-rating">
