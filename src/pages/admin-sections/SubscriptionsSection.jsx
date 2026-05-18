@@ -71,6 +71,7 @@ export default function SubscriptionsSection() {
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [subscription, setSubscription] = useState(null);
+  const [pastSubscriptions, setPastSubscriptions] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -113,28 +114,11 @@ export default function SubscriptionsSection() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       
-      if (data.length > 0) {
-        const latest = data[0];
-        // Parse notes to extract payment details
-        const notesMatch = latest.notes?.match(/Total: ₹(\d+) \| Paid: ₹(\d+) \| Discount: ₹(\d+) \| Balance: ₹(\d+)/);
-        
-        setSubscription({
-          package: latest.plan_name || '',
-          renewalDate: latest.start_date || new Date().toISOString().split('T')[0],
-          expireDate: latest.end_date || '',
-          totalAmount: notesMatch ? Number(notesMatch[1]) : Number(latest.amount) || 0,
-          paidAmount: notesMatch ? Number(notesMatch[2]) : 0,
-          paymentDate: new Date().toISOString().split('T')[0],
-          paymentMethod: 'Cash',
-          discount: notesMatch ? Number(notesMatch[3]) : 0,
-          balanceAmount: notesMatch ? Number(notesMatch[4]) : Number(latest.amount) || 0,
-          notes: latest.notes?.split(' | ').slice(4).join(' | ') || '',
-        });
-      } else {
-        setSubscription(getEmptySubscription());
-      }
+      setPastSubscriptions(data);
+      setSubscription(getEmptySubscription());
     } catch (err) {
       setError(err.message);
+      setPastSubscriptions([]);
       setSubscription(getEmptySubscription());
     }
   };
@@ -178,20 +162,7 @@ export default function SubscriptionsSection() {
 
     setIsSaving(true);
     try {
-      // Delete existing subscriptions
-      const existingRes = await fetch(`${API}/api/admin/customers/${selectedCustomer.id}/subscription`, {
-        headers: authHeaders(),
-      });
-      const existingSubs = await existingRes.json();
-      
-      for (const sub of existingSubs) {
-        await fetch(`${API}/api/admin/customer-subscriptions/${sub.id}`, {
-          method: 'DELETE',
-          headers: authHeaders(),
-        });
-      }
-
-      // Create new subscription
+      // Create new subscription without deleting past subscriptions
       await fetch(`${API}/api/admin/customers/${selectedCustomer.id}/subscription`, {
         method: 'POST',
         headers: authHeaders(),
@@ -220,6 +191,7 @@ export default function SubscriptionsSection() {
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2000);
       loadCustomers();
+      loadCustomerSubscription(selectedCustomer.id);
     } catch (err) {
       alert('Failed to save subscription: ' + err.message);
     } finally {
@@ -405,6 +377,50 @@ export default function SubscriptionsSection() {
 
           {subscription && (
             <>
+              {/* Past Subscriptions (Read Only) */}
+              <div className="admin-card" style={{ marginBottom: 24, borderLeft: '4px solid #3b82f6' }}>
+                <div className="admin-card-header">
+                  <div>
+                    <span className="admin-card-eyebrow" style={{ color: '#3b82f6' }}>History</span>
+                    <h3>Past Assigned Subscriptions</h3>
+                    <p>These are the broadband packages already assigned to this customer.</p>
+                  </div>
+                </div>
+
+                {pastSubscriptions.length === 0 ? (
+                  <div style={{ padding: '24px', textAlign: 'center', color: '#6b7280', background: '#f9fafb', borderRadius: 8 }}>
+                    No past subscriptions found for this customer.
+                  </div>
+                ) : (
+                  <div className="table-wrapper" style={{ overflowX: 'auto', marginTop: 12 }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                      <thead>
+                        <tr style={{ background: '#f3f4f6', borderBottom: '2px solid #e5e7eb', textAlign: 'left' }}>
+                          <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700 }}>Package / Plan</th>
+                          <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700 }}>Start Date</th>
+                          <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700 }}>End Date</th>
+                          <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700, textAlign: 'right' }}>Plan Cost</th>
+                          <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700 }}>Billing Remarks</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pastSubscriptions.map((s, idx) => (
+                          <tr key={idx} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                            <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 600 }}>{s.plan_name}</td>
+                            <td style={{ padding: '10px 12px', fontSize: 13 }}>{new Date(s.start_date).toLocaleDateString()}</td>
+                            <td style={{ padding: '10px 12px', fontSize: 13 }}>{new Date(s.end_date).toLocaleDateString()}</td>
+                            <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 700, textAlign: 'right' }}>
+                              ₹{Number(s.amount).toLocaleString()}
+                            </td>
+                            <td style={{ padding: '10px 12px', fontSize: 13, color: '#4b5563' }}>{s.notes || '—'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
               <div className="admin-card">
                 <div className="admin-card-header">
                   <div>

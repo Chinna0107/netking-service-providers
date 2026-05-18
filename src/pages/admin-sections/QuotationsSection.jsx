@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MdAdd, MdEdit, MdDelete, MdSearch, MdClose, MdPrint, MdRemove } from 'react-icons/md';
+import logo from '../../assets/logo.jpeg';
 
 export default function QuotationsSection() {
   const [quotations, setQuotations] = useState([]);
@@ -351,10 +352,16 @@ function PrintableQuotation({ quotation: q, onClose }) {
 
         <div style={{ maxWidth: 800, margin: '0 auto', padding: 40, background: '#fff', fontFamily: 'Arial, sans-serif' }}>
           {/* Header */}
-          <div style={{ borderBottom: '3px solid #e01020', paddingBottom: 20, marginBottom: 30 }}>
-            <h1 style={{ margin: 0, fontSize: 32, color: '#e01020' }}>NetKing Security Systems</h1>
-            <p style={{ margin: '8px 0 0', color: '#6b7280' }}>Professional CCTV & Security Solutions</p>
-            <p style={{ margin: '4px 0 0', fontSize: 14, color: '#6b7280' }}>📞 9248353592 | 📧 info@netking.in</p>
+          <div style={{ borderBottom: '3px solid #e01020', paddingBottom: 20, marginBottom: 30, display: 'flex', gap: 20, alignItems: 'center' }}>
+            <img src={logo} alt="NetKing Logo" style={{ width: 80, height: 80, objectFit: 'contain', borderRadius: 8 }} />
+            <div>
+              <h1 style={{ margin: 0, fontSize: 32, color: '#e01020', fontWeight: 800, lineHeight: 1.1 }}>NetKing Security Systems</h1>
+              <p style={{ margin: '6px 0 0', color: '#1f2937', fontWeight: 600, fontSize: 15 }}>Professional CCTV & Security Solutions</p>
+              <p style={{ margin: '4px 0 0', fontSize: 13, color: '#4b5563', lineHeight: 1.4 }}>
+                📍 H.No, 3/A, 2-3-35/K/3, beside Bata Show Room, Zinda Tilismath Nagar, Amberpet, Hyderabad, Telangana 500044
+              </p>
+              <p style={{ margin: '4px 0 0', fontSize: 13, color: '#6b7280', fontWeight: 600 }}>📞 9248353592 | 📧 info@netking.in</p>
+            </div>
           </div>
 
           {/* Quotation Info */}

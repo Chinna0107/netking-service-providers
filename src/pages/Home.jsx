@@ -69,13 +69,13 @@ const clients = [
 ];
 
 const partners = [
-  { name:'CP Plus', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://cpplusworld.com&size=256' },
-  { name:'Dahua Technologies', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dahuasecurity.com&size=256' },
-  { name:'Hikvision', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://hikvision.com&size=256' },
+  { name:'CP Plus', logo:'https://fgtechstore.com/wp-content/uploads/2026/02/3.jpg' },
+  { name:'Dahua Technologies', logo:'https://media.licdn.com/dms/image/v2/D4D1BAQHQcnHPdljlBw/company-background_10000/company-background_10000/0/1655781293667/dahua_technology_hk_limited_cover?e=2147483647&v=beta&t=UHAgN-loV41Xw1BV6BcIL50J0xXX-BI-say4bvqda4Q' },
+  { name:'Hikvision', logo:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTemzTCORElRVRVgQ_esxnfyQgj3akp_cVMRA&s' },
   { name:'XPIA-I', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://xpia-i.com&size=256' },
   { name:'D-Link', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://dlink.com&size=256' },
   { name:'Honeywell', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://honeywell.com&size=256' },
-  { name:'Unicam Systems', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unicamsystems.com&size=256' },
+  { name:'Unicam Systems', logo:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_A3kVylHjCja6Gs9FTQAyhAJO5meDgbnNZQ&s' },
   { name:'Prama', logo:'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.pramaindia.in&size=256' },
 ];
 
@@ -89,9 +89,15 @@ const whyUs = [
 ];
 
 const testimonials = [
-  { name:'Rajesh Kumar',  role:'Business Owner',  text:'NetKing installed 8 cameras at my shop. Excellent work, very professional team!', r:5 },
-  { name:'Priya Sharma',  role:'Homeowner',        text:'Great service! They set up mobile app access too. Highly recommend NetKing.',     r:5 },
-  { name:'Suresh Reddy',  role:'Factory Manager',  text:'Installed 20+ cameras at our factory. Flawless execution and great support.',     r:5 },
+  { name: 'Lakshmi Rishika', role: 'Office CCTV Installation', text: 'I had an excellent experience with the CCTV installation at my office. The staff was very professional and completed the job without causing any disruption to our work. The camera quality is fantastic, and the remote access feature is a game changer.', r: 5 },
+  { name: 'Punyavathi', role: 'Home Security Upgrade', text: 'I recently upgraded my home security system, and I chose to go with their service. The installation was quick, and the technicians were very helpful. I love being able to monitor my home from my phone. Great job!', r: 5 },
+  { name: 'chandra kanth', role: 'Home CCTV Setup', text: 'Just had my home CCTV system set up, and I am really pleased with the outcome. The installation was smooth, and the technicians were very respectful of my home. I appreciate how they took the time to answer all my questions.', r: 5 },
+  { name: 'Sadullah Syed', role: 'Satisfied Client', text: 'Netking CCTV delivered outstanding service from start to finish. The installation team was punctual, knowledgeable, and efficient. System configuration was well explained, and after-sales support has been very responsive.', r: 5 },
+  { name: 'venkatesh Madiwal', role: 'Client', text: 'Good Work and clean work in time. Good Service Excellent Clearty.', r: 5 },
+  { name: 'Satyanarayana Satyanarayana', role: 'Client', text: 'Very excellent service', r: 5 },
+  { name: 'naresh gupta', role: 'Local Guide', text: 'Excellent device, good service', r: 5 },
+  { name: 'Shivaneela19 Sony', role: 'Customer', text: 'Wonderful service very good', r: 5 },
+  { name: 'Mohammed Aleem uddin', role: 'Customer', text: 'Giving Best service', r: 5 }
 ];
 
 export default function Home() {
@@ -319,22 +325,42 @@ export default function Home() {
       </section>
 
       {/* Authorized Partners */}
-      <section className="section partners-sec">
-        <div className="container">
-          <span className="eyebrow reveal">Our Partners</span>
-          <h2 className="sec-title reveal">Authorized <span>Partners</span></h2>
-          <p className="sec-sub reveal">We partner with industry-leading technology providers</p>
-          <div className="partners-grid">
-            {partners.map(({name,logo},i)=>(
-              <div key={name} className="partner-card reveal" data-delay={i*50}>
-                <img src={logo} alt={name} loading="lazy" onError={(e)=>e.target.style.display='none'}/>
-                <span className="partner-name">{name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+<section className="section partners-sec">
+  <div className="container">
+    <span className="eyebrow reveal">Our Partners</span>
+    <h2 className="sec-title reveal">
+      Authorized <span>Partners</span>
+    </h2>
+    <p className="sec-sub reveal">
+      We partner with industry-leading technology providers
+    </p>
 
+    <div className="partners-grid">
+      {partners.map(({ name, logo }, i) => (
+        <div
+          key={name}
+          className="partner-card reveal"
+          data-delay={i * 50}
+          style={{ backgroundColor: "#ffffff" }}
+        >
+          <img
+            src={logo}
+            alt={name}
+            loading="lazy"
+            onError={(e) => (e.target.style.display = "none")}
+          />
+
+          <span
+            className="partner-name"
+            style={{ color: "#000000" }}
+          >
+            {name}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
       {/* Testimonials */}
       <section className="section testi-sec">
         <div className="container">
@@ -357,6 +383,32 @@ export default function Home() {
               {testimonials.map((_,i)=>(
                 <button key={i} className={`tdot ${i===testi?'on':''}`} onClick={()=>setTesti(i)}/>
               ))}
+            </div>
+
+            <div style={{ textAlign: 'center', marginTop: '24px' }}>
+              <a 
+                href="https://share.google/g6LhSXfz1LeSd6Zv8" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 24px',
+                  background: '#fff',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '999px',
+                  color: '#1f2937',
+                  fontWeight: 700,
+                  fontSize: '15px',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
+                  transition: 'transform 0.2s, border-color 0.2s'
+                }}
+              >
+                ⭐ Share your feedback with us on Google Reviews ✍️
+              </a>
             </div>
           </div>
         </div>

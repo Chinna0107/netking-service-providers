@@ -114,7 +114,7 @@ const statsData = [
 const badgeMap = { bs: ['pb-bs', 'Best Seller'], new: ['pb-new', 'New'], prem: ['pb-prem', 'Premium'] };
 
 const serviceImages = {
-  'cctv-installation': 'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860537/WhatsApp_Image_2026-05-10_at_13.55.48_1_yd4uda.jpg',
+  'cctv-installation': 'https://aquatechindia.com/wp-content/uploads/2023/08/1.jpg',
   'system-maintenance': 'https://res.cloudinary.com/dgyykbmt6/image/upload/v1778860539/WhatsApp_Image_2026-05-12_at_12.30.53_n8oxpm.jpg',
   'remote-monitoring': 'https://cdn.iplocation.net/assets/images/blog/2024/featured/remote-camera.png',
   'mobile-app-integration': 'https://www.cctvcamerapros.com/v/4K/View-Security-Cameras-Android-App.jpg',
@@ -270,8 +270,8 @@ export default function Services() {
                 <div className="svc-card-footer">
                   <span className="svc-card-price">{price}</span>
                   <div className="svc-card-btns">
-                    <a href="tel:9248353592" className="svc-btn svc-btn-call" onClick={e=>e.preventDefault()}><MdPhone />Call</a>
-                    <a href="https://wa.me/919248353592" className="svc-btn svc-btn-wa" target="_blank" rel="noreferrer" onClick={e=>e.preventDefault()}><FaWhatsapp />WhatsApp</a>
+                    <span className="svc-btn svc-btn-call"><MdPhone />Call</span>
+                    <span className="svc-btn svc-btn-wa"><FaWhatsapp />WhatsApp</span>
                   </div>
                 </div>
                 <div className="svc-card-bar" />

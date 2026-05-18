@@ -22,6 +22,7 @@ export default function ProductsSection() {
   const [searchTerm, setSearchTerm] = useState('');
   const [serviceFilter, setServiceFilter] = useState('all');
   const [products, setProducts] = useState([]);
+  const [pastProducts, setPastProducts] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -78,9 +79,11 @@ export default function ProductsSection() {
         vendorCode: p.vendor_code || '',
       }));
       
-      setProducts(editorProducts.length > 0 ? editorProducts : [getEmptyProduct()]);
+      setPastProducts(editorProducts);
+      setProducts([getEmptyProduct()]);
     } catch (err) {
       setError(err.message);
+      setPastProducts([]);
       setProducts([getEmptyProduct()]);
     }
   };
@@ -114,25 +117,17 @@ export default function ProductsSection() {
   const saveProductsToCustomer = async () => {
     if (!selectedCustomer) return;
 
+    // Check if at least one meaningful product is being added
+    const productsToAdd = products.filter(p => p.type && p.unitPrice > 0);
+    if (productsToAdd.length === 0) {
+      alert('Please add at least one product with a Name and Unit Price.');
+      return;
+    }
+
     setIsSaving(true);
     try {
-      // Delete all existing products for this customer
-      const existingRes = await fetch(`${API}/api/admin/customers/${selectedCustomer.id}/products`, {
-        headers: authHeaders(),
-      });
-      const existingProducts = await existingRes.json();
-      
-      for (const ep of existingProducts) {
-        await fetch(`${API}/api/admin/customer-products/${ep.id}`, {
-          method: 'DELETE',
-          headers: authHeaders(),
-        });
-      }
-
-      // Add all current products
-      for (const product of products) {
-        if (!product.type || product.unitPrice === 0) continue; // Skip empty/invalid products
-        
+      // Add all new products
+      for (const product of productsToAdd) {
         // Check if product exists in catalog
         const catalogRes = await fetch(`${API}/api/admin/products`, { headers: authHeaders() });
         const catalog = await catalogRes.json();
@@ -184,6 +179,8 @@ export default function ProductsSection() {
       
       // Reload customers to update counts
       loadCustomers();
+      // Reload past products list and reset draft
+      loadCustomerProducts(selectedCustomer.id);
     } catch (err) {
       alert('Failed to save products: ' + err.message);
     } finally {
@@ -366,12 +363,68 @@ export default function ProductsSection() {
             </div>
           </div>
 
+          {/* Past Assigned Products (Read Only) */}
+          <div className="admin-card" style={{ marginBottom: 24, borderLeft: '4px solid #3b82f6' }}>
+            <div className="admin-card-header">
+              <div>
+                <span className="admin-card-eyebrow" style={{ color: '#3b82f6' }}>History</span>
+                <h3>Past Added Products & Devices</h3>
+                <p>These products are already assigned to the customer and cannot be edited.</p>
+              </div>
+            </div>
+
+            {pastProducts.length === 0 ? (
+              <div style={{ padding: '24px', textAlign: 'center', color: '#6b7280', background: '#f9fafb', borderRadius: 8 }}>
+                No products have been assigned in the past.
+              </div>
+            ) : (
+              <div className="table-wrapper" style={{ overflowX: 'auto', marginTop: 12 }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ background: '#f3f4f6', borderBottom: '2px solid #e5e7eb', textAlign: 'left' }}>
+                      <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700 }}>Product Name</th>
+                      <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700 }}>Model / Description</th>
+                      <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700 }}>Serial No</th>
+                      <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700 }}>Vendor</th>
+                      <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700, textAlign: 'center' }}>Qty</th>
+                      <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700, textAlign: 'right' }}>Unit Price</th>
+                      <th style={{ padding: '10px 12px', fontSize: 13, fontWeight: 700, textAlign: 'right' }}>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pastProducts.map((p, idx) => (
+                      <tr key={idx} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                        <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 600 }}>{p.type}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 13, color: '#4b5563' }}>{p.model || '—'}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 13, fontFamily: 'monospace' }}>{p.serialNo || '—'}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 13 }}>{p.vendorCode || '—'}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 14, textAlign: 'center' }}>{p.quantity}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 14, textAlign: 'right' }}>₹{p.unitPrice.toLocaleString()}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 700, textAlign: 'right', color: '#111827' }}>
+                          ₹{(p.quantity * p.unitPrice).toLocaleString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {pastProducts.length > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16, padding: '10px 12px', background: '#eff6ff', borderRadius: 8 }}>
+                <span style={{ fontSize: 14, color: '#1e40af', fontWeight: 600 }}>
+                  Total Past Value: ₹{pastProducts.reduce((sum, p) => sum + (p.quantity * p.unitPrice), 0).toLocaleString()}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Add New Products (Editable Form) */}
           <div className="admin-card">
             <div className="admin-card-header">
               <div>
-                <span className="admin-card-eyebrow">Product Assignment</span>
-                <h3>Assigned Products & Devices</h3>
-                <p>Add products for this customer. Click Save to update the database and customer portal.</p>
+                <span className="admin-card-eyebrow">Action Required</span>
+                <h3>Add New Products & Devices</h3>
+                <p>Fill out details below to assign new products. Outstanding balances are updated and calculated on the <strong>Payments Page</strong>.</p>
               </div>
             </div>
 
@@ -436,7 +489,7 @@ export default function ProductsSection() {
             </button>
 
             <div className="product-total-chip" style={{ marginTop: 20 }}>
-              <span>Total Product Value</span>
+              <span>New Products Value</span>
               <strong style={{ fontSize: 20, color: '#e01020' }}>₹{totalValue.toLocaleString()}</strong>
             </div>
           </div>
