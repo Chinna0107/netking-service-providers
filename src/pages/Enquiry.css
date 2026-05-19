@@ -95,7 +95,7 @@
   50% { transform: translateY(30px); }
 }
 
-.enq-grid {
+.enq-bg-grid {
   position: absolute;
   inset: 0;
   background-image:

@@ -8,43 +8,43 @@ import {
 import { FaVideo, FaWifi, FaShieldAlt } from 'react-icons/fa';
 import './AdminPanel.css';
 
-import DashboardSection    from './admin-sections/DashboardSection';
-import CustomersSection    from './admin-sections/CustomersSection';
-import AddCustomerSection  from './admin-sections/AddCustomerSection';
+import DashboardSection from './admin-sections/DashboardSection';
+import CustomersSection from './admin-sections/CustomersSection';
+import AddCustomerSection from './admin-sections/AddCustomerSection';
 import AllCustomersSection from './admin-sections/AllCustomersSection';
-import ProductsSection     from './admin-sections/ProductsSection';
-import PaymentsSummary     from './admin-sections/PaymentsSummary';
-import AMCSection          from './admin-sections/AMCSection';
-import TicketsSection      from './admin-sections/TicketsSection';
-import AccountsSection     from './admin-sections/AccountsSection';
-import QuotationsSection   from './admin-sections/QuotationsSection';
-import BillBookSection     from './admin-sections/BillBookSection';
-import AttendanceSection   from './admin-sections/AttendanceSection';
+import ProductsSection from './admin-sections/ProductsSection';
+import PaymentsSummary from './admin-sections/PaymentsSummary';
+import AMCSection from './admin-sections/AMCSection';
+import TicketsSection from './admin-sections/TicketsSection';
+import AccountsSection from './admin-sections/AccountsSection';
+import QuotationsSection from './admin-sections/QuotationsSection';
+import BillBookSection from './admin-sections/BillBookSection';
+import AttendanceSection from './admin-sections/AttendanceSection';
 import SubscriptionsSection from './admin-sections/SubscriptionsSection';
 
 const MENU = [
-  { id: 'dashboard',      label: 'Dashboard Home',         icon: <MdDashboard/>,            group: 'main' },
-  { id: 'addcustomer',    label: 'Add Customer',           icon: <MdPersonAdd/>,            group: 'customers' },
-  { id: 'customers',      label: 'All Customers',          icon: <MdPeople/>,               group: 'customers' },
-  { id: 'cctv',           label: 'CCTV Clients [NKSS]',   icon: <FaVideo/>,                group: 'customers' },
-  { id: 'broadband',      label: 'Broadband Users [NKBB]', icon: <FaWifi/>,                 group: 'customers' },
-  { id: 'products',       label: 'Add Products To Customers', icon: <MdInventory/>,         group: 'customers' },
-  { id: 'subscriptions',  label: 'Subscription Plans',     icon: <MdAccessTime/>,           group: 'customers' },
-  { id: 'payments',       label: 'Payments & Balances',    icon: <MdAccountBalanceWallet/>, group: 'finance' },
-  { id: 'accounts',       label: 'Accounts',               icon: <MdAccountBalance/>,       group: 'finance' },
-  { id: 'quotations',     label: 'Quotations',             icon: <MdDescription/>,          group: 'finance' },
+  { id: 'dashboard', label: 'Dashboard Home', icon: <MdDashboard />, group: 'main' },
+  { id: 'addcustomer', label: 'Add Customer', icon: <MdPersonAdd />, group: 'customers' },
+  { id: 'customers', label: 'All Customers', icon: <MdPeople />, group: 'customers' },
+  { id: 'cctv', label: 'CCTV Clients [NKSS]', icon: <FaVideo />, group: 'customers' },
+  { id: 'broadband', label: 'Broadband Users [NKBB]', icon: <FaWifi />, group: 'customers' },
+  { id: 'products', label: 'Add Products To Customers', icon: <MdInventory />, group: 'customers' },
+  { id: 'subscriptions', label: 'Subscription Plans', icon: <MdAccessTime />, group: 'customers' },
+  { id: 'payments', label: 'Payments & Balances', icon: <MdAccountBalanceWallet />, group: 'finance' },
+  { id: 'accounts', label: 'Accounts', icon: <MdAccountBalance />, group: 'finance' },
+  { id: 'quotations', label: 'Quotations', icon: <MdDescription />, group: 'finance' },
   // { id: 'billbook',       label: 'Bill Book',              icon: <MdReceiptLong/>,          group: 'finance' },
   // { id: 'amc',            label: 'AMC Contracts',          icon: <FaShieldAlt/>,            group: 'services' },
-  { id: 'tickets',        label: 'Service Tickets',        icon: <MdAssignment/>,           group: 'services' },
+  { id: 'tickets', label: 'Service Tickets', icon: <MdAssignment />, group: 'services' },
   // { id: 'attendance',     label: 'Staff Attendance',       icon: <MdAccessTime/>,           group: 'hr' },
 ];
 
 const GROUPS = {
-  main:      'Overview',
+  main: 'Overview',
   customers: 'Core Workflow',
-  finance:   'Collections',
-  services:  'Service Ops',
-  hr:        'HR',
+  finance: 'Collections',
+  services: 'Service Ops',
+  hr: 'HR',
 };
 
 const SECTION_META = {
@@ -143,27 +143,27 @@ export default function AdminPanel() {
   };
 
   const logout = () => {
-    ['userRole','userEmail','token','adminActiveSection'].forEach(k => localStorage.removeItem(k));
+    ['userRole', 'userEmail', 'token', 'adminActiveSection'].forEach(k => localStorage.removeItem(k));
     nav('/');
   };
 
   const renderSection = () => {
     switch (active) {
-      case 'dashboard':     return <DashboardSection   onNavigate={handleSetActive} />;
-      case 'addcustomer':   return <AddCustomerSection />;
-      case 'customers':     return <AllCustomersSection />;
-      case 'cctv':          return <CustomersSection   serviceFilter="cctv" />;
-      case 'broadband':     return <CustomersSection   serviceFilter="broadband" />;
-      case 'products':      return <ProductsSection />;
+      case 'dashboard': return <DashboardSection onNavigate={handleSetActive} />;
+      case 'addcustomer': return <AddCustomerSection />;
+      case 'customers': return <AllCustomersSection />;
+      case 'cctv': return <CustomersSection serviceFilter="cctv" />;
+      case 'broadband': return <CustomersSection serviceFilter="broadband" />;
+      case 'products': return <ProductsSection />;
       case 'subscriptions': return <SubscriptionsSection />;
-      case 'payments':      return <PaymentsSummary />;
-      case 'accounts':      return <AccountsSection />;
-      case 'quotations':    return <QuotationsSection />;
+      case 'payments': return <PaymentsSummary />;
+      case 'accounts': return <AccountsSection />;
+      case 'quotations': return <QuotationsSection />;
       // case 'billbook':      return <BillBookSection />;
       // case 'amc':           return <AMCSection />;
-      case 'tickets':       return <TicketsSection />;
+      case 'tickets': return <TicketsSection />;
       // case 'attendance':    return <AttendanceSection />;
-      default:              return <DashboardSection   onNavigate={handleSetActive} />;
+      default: return <DashboardSection onNavigate={handleSetActive} />;
     }
   };
 

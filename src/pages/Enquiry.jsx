@@ -52,7 +52,7 @@ export default function Enquiry() {
 
       {/* Hero */}
       <section className="enq-hero">
-        <div className="enq-bg"><div className="enq-orb enq-o1"/><div className="enq-orb enq-o2"/><div className="enq-grid"/></div>
+        <div className="enq-bg"><div className="enq-orb enq-o1"/><div className="enq-orb enq-o2"/><div className="enq-bg-grid"/></div>
         <div className="container enq-hero-inner">
           <span className="eyebrow reveal"><FaWhatsapp style={{verticalAlign:'middle',marginRight:6}}/>Get In Touch</span>
           <h1 className="sec-title reveal">Send Us an <span>Enquiry</span></h1>

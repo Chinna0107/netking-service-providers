@@ -209,9 +209,9 @@ export default function PaymentsSummary() {
           note: noteStr
         })
       });
-      
+
       if (!res.ok) throw new Error('Failed to save payment');
-      
+
       await loadPaymentsSummary();
       closePaymentModal();
     } catch (err) {
@@ -271,13 +271,13 @@ export default function PaymentsSummary() {
             <div className="ps-label">Total Received</div>
           </div>
         </div>
-        <div className="ps-card balance">
+        <div className="ps-card balance" style={{ cursor: 'pointer' }} onClick={() => setBalanceView('outstanding')}>
           <div className="ps-icon">
             <MdWarning />
           </div>
           <div className="ps-content">
             <div className="ps-value">{formatCurrency(totalBalance)}</div>
-            <div className="ps-label">Remaining Balance</div>
+            <div className="ps-label">Remaining Balance (Click to view)</div>
           </div>
         </div>
         <div className="ps-card pending">
@@ -324,9 +324,9 @@ export default function PaymentsSummary() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', alignItems: 'end' }}>
           <div>
             <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#6b7280', marginBottom: '6px' }}>Search Customers</label>
-            <input 
-              type="text" 
-              placeholder="Name, mobile, city..." 
+            <input
+              type="text"
+              placeholder="Name, mobile, city..."
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
               style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db' }}
@@ -334,8 +334,8 @@ export default function PaymentsSummary() {
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#6b7280', marginBottom: '6px' }}>Service Type</label>
-            <select 
-              value={serviceFilter} 
+            <select
+              value={serviceFilter}
               onChange={(event) => setServiceFilter(event.target.value)}
               style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db' }}
             >
@@ -346,8 +346,8 @@ export default function PaymentsSummary() {
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#6b7280', marginBottom: '6px' }}>Balance Status</label>
-            <select 
-              value={balanceView} 
+            <select
+              value={balanceView}
               onChange={(event) => setBalanceView(event.target.value)}
               style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db' }}
             >
