@@ -7,7 +7,7 @@ const cards = [
   { ico: <MdPhone size={22} />, t: 'Phone', v: '9248353592', s: 'Mon–Sat, 9AM–7PM', href: 'tel:9248353592', cls: 'cc-red' },
   { ico: <FaWhatsapp size={22} />, t: 'WhatsApp', v: 'Chat with us', s: 'Quick response', href: 'https://wa.me/919248353592', cls: 'cc-green', ext: true },
   { ico: <MdEmail size={22} />, t: 'Email', v: 'support.netkingservice@gmail.com', s: 'Reply within 2hrs', href: 'mailto:support.netkingservice@gmail.com', cls: 'cc-red' },
-  { ico: <MdLocationOn size={22} />, t: 'Location', v: 'Hyderabad', s: 'Telangana, India', href: '#', cls: 'cc-orange' },
+  { ico: <MdLocationOn size={22} />, t: 'Location', v: 'Hyderabad', s: 'Telangana, India', href: 'https://www.google.com/maps/dir/?api=1&destination=Netking%20Security%20Systems%2C%20Hyderabad%2C%20Telangana', ext: true, cls: 'cc-orange' },
 ];
 const hours = [
   ['Monday – Friday', '9:00 AM – 7:00 PM', true],
@@ -40,10 +40,29 @@ export default function Contact() {
     return encodeURIComponent(lines.join('\n'));
   };
 
-  const submit = e => {
-    e.preventDefault(); 
-    window.open(`https://wa.me/919248353592?text=${buildWAMsg()}`, '_blank');
-  };
+  const handleGetDirections = () => {
+  const fallbackUrl = 'https://maps.app.goo.gl/9T6JvayWwSUZhpnc9';
+  const destination = '17.4172464795,78.3183561634';
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=${destination}`;
+        window.open(url, '_blank');
+      },
+      () => {
+        window.open(fallbackUrl, '_blank');
+      }
+    );
+  } else {
+    window.open(fallbackUrl, '_blank');
+  }
+};
+
+    const submit = e => {
+  e.preventDefault();
+  window.open(`https://wa.me/919248353592?text=${buildWAMsg()}`, '_blank');
+};
 
   return (
     <main className="contact-page">
@@ -62,8 +81,11 @@ export default function Contact() {
             <span className="chi-badge"><MdAccessTime />Mon–Sat 9AM–7PM</span>
           </div>
         </div>
-      </section>
-
+        {/* Get Directions Button */}
+        <div className="container" style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button className="btn-red get-dir-btn" onClick={handleGetDirections}>Get Directions</button>
+        </div>
+</section>
       <section className="section" style={{ paddingBottom: 0 }}>
         <div className="container">
           <iframe 
